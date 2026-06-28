@@ -1,0 +1,19 @@
+---
+description: Monorepo layout, ports, make targets for server/web/rust/demo
+globs: "**/*.{ts,tsx,rs,yml,yaml}"
+alwaysApply: false
+---
+
+# DebugViz — monorepo
+
+| Path | Stack |
+|------|-------|
+| `server/` | Node.js, Fastify, WebSocket |
+| `web/` | Vite, React, TypeScript, Three.js |
+| `rust/layout/` | WASM force-directed layout (wasm-pack) |
+| `demo/http|grpc|cli|worker/` | Go demos |
+| `schemas/` | graph + trace JSON Schema |
+
+Ports (docker compose): UI `:3000`, debug-server `:4000`, demo/http `:8080`.
+
+pnpm workspaces: `server`, `web`. CI: `go test`, `pnpm test`, `wasm-pack build`.

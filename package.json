@@ -1,0 +1,20 @@
+{
+  "name": "debugviz",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "concurrently -n server,web,demo -c blue,green,yellow \"pnpm --filter @debugviz/server dev\" \"pnpm --filter @debugviz/web dev\" \"go run ./demo/http\"",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,json,md,yml,yaml}\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.21.0",
+    "prettier": "^3.5.2",
+    "typescript-eslint": "^8.25.0"
+  },
+  "packageManager": "pnpm@10.4.1"
+}

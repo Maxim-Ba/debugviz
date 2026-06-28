@@ -1,0 +1,14 @@
+---
+description: DebugViz core conventions — README contract, module path, scope
+alwaysApply: true
+---
+
+# DebugViz — core
+
+- **README = контракт MVP.** Перед реализацией — какой раздел README / issue закрывается. Не менять публичный API без обновления README и docs/BACKLOG.md.
+- **Go module:** `github.com/Maxim-Ba/debugviz`
+- **Integration:** Recommended = `debugviz wire` + `instrument` (M6/M3); Manual = `Configure` + entry hooks (Advanced, M2).
+- **Минимальный diff.** Не рефакторить unrelated code. Не удалять существующие комментарии.
+- **Docs:** README/MVP_PLAN/BACKLOG — на русском; код, CLI flags, identifiers — на английском.
+- **Build tag:** runtime instrumentation — `-tags debugviz` и/или `DEBUGVIZ_ENABLED=true`.
+- **Коммиты:** только по явной просьбе пользователя.

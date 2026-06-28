@@ -1,0 +1,22 @@
+---
+description: Go code conventions for DebugViz monorepo
+globs: go/**/*
+alwaysApply: false
+---
+
+# DebugViz — Go
+
+Layout:
+- `go/cmd/debugviz/` — CLI (scan, instrument, wire)
+- `go/lib/debugviz/` — runtime (Configure, StartSpan, HTTPMiddleware, interceptors)
+- `go/pkg/scanner/adapters/` — EntryDiscoverer (chi, gin, echo, stdlib, grpc, cli)
+- `go/pkg/codegen/instrument/` — inner spans
+- `go/pkg/codegen/wire/` — entry hooks + Configure injection
+- `go/pkg/protocol/` — graph + trace types (sync with schemas/)
+
+Codegen rules:
+- Idempotent re-runs; support `--dry-run`
+- Golden file tests for scanner, instrument, wire
+- MVP: instrument only `func(ctx context.Context, ...)` unless `allow_no_context: true`
+
+Graph schema v2: node `entry_point` (kind http|grpc|cli|worker), edge `entry_handles`.

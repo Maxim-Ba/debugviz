@@ -27,6 +27,26 @@ go.work.sum
 # env file
 .env
 
+# Node
+node_modules/
+dist/
+.pnpm-store/
+
+# Rust / WASM
+rust/layout/target/
+rust/layout/pkg/
+rust/layout/Cargo.lock
+
 # Editor/IDE
 # .idea/
 # .vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vite
+web/dist/
+
+# Temp
+/tmp/
