@@ -194,6 +194,8 @@ func (b *graphBuilder) addEntryPoints(entries []adapters.EntryPoint) {
 			b.addHTTPEntryPoint(entry)
 		case protocol.EntryKindGRPC:
 			b.addGRPCEntryPoint(entry)
+		case protocol.EntryKindCLI:
+			b.addCLIEntryPoint(entry)
 		}
 	}
 }
@@ -247,6 +249,31 @@ func (b *graphBuilder) addGRPCEntryPoint(entry adapters.EntryPoint) {
 		Metadata: map[string]any{
 			"service": entry.Service,
 			"method":  entry.Method,
+		},
+	}
+
+	if entry.HasHandler {
+		b.addFunctionNode(entry.Handler)
+		handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
+		edgeID := entryHandlesEdgeID(entryID, handlerID)
+		b.edges[edgeID] = protocol.Edge{
+			ID:     edgeID,
+			Type:   protocol.EdgeTypeEntryHandles,
+			Source: entryID,
+			Target: handlerID,
+		}
+	}
+}
+
+func (b *graphBuilder) addCLIEntryPoint(entry adapters.EntryPoint) {
+	entryID := entryNodeID(entry.Kind, entry.Command, "")
+	b.nodes[entryID] = protocol.Node{
+		ID:   entryID,
+		Type: protocol.NodeTypeEntryPoint,
+		Kind: entry.Kind,
+		Name: entry.Command,
+		Metadata: map[string]any{
+			"command": entry.Command,
 		},
 	}
 

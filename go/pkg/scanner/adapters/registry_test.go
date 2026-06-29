@@ -6,6 +6,19 @@ import (
 	"github.com/Maxim-Ba/debugviz/go/pkg/scanner/adapters"
 )
 
+func TestSelectDiscoverersAutoUsesCLIForDemoCLI(t *testing.T) {
+	pkgs := loadPackages(t, "./demo/cli/...")
+	discoverers, err := adapters.SelectDiscoverers(adapters.FrameworkAuto, pkgs)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	names := discovererNames(discoverers)
+	if !contains(names, "cli") {
+		t.Fatalf("auto mode: want cli discoverer, got %v", names)
+	}
+}
+
 func TestSelectDiscoverersAutoUsesGRPCForDemoGRPC(t *testing.T) {
 	pkgs := loadPackages(t, "./demo/grpc/...")
 	discoverers, err := adapters.SelectDiscoverers(adapters.FrameworkAuto, pkgs)

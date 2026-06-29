@@ -21,6 +21,8 @@ func entryNodeID(kind protocol.EntryKind, method, path string) string {
 		return fmt.Sprintf("entry:http:%s:%s", method, path)
 	case protocol.EntryKindGRPC:
 		return fmt.Sprintf("entry:grpc:%s:%s", method, path)
+	case protocol.EntryKindCLI:
+		return fmt.Sprintf("entry:cli:%s", slugCLICommand(method))
 	default:
 		return fmt.Sprintf("entry:%s:%s:%s", kind, method, path)
 	}
@@ -40,4 +42,8 @@ func httpEntryName(method, path string) string {
 
 func grpcEntryName(service, method string) string {
 	return service + "/" + method
+}
+
+func slugCLICommand(command string) string {
+	return strings.NewReplacer(" ", "-", "/", "-", ":", "-").Replace(command)
 }

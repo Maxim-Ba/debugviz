@@ -54,8 +54,7 @@ func SelectDiscoverers(framework string, pkgs []*packages.Package) ([]EntryDisco
 	case FrameworkGRPC:
 		return []EntryDiscoverer{NewGRPC()}, nil
 	case FrameworkCLI:
-		// CLI discoverer is implemented in issue 1.6.
-		return nil, nil
+		return []EntryDiscoverer{NewCLI()}, nil
 	case FrameworkNone:
 		return nil, nil
 	default:
@@ -76,6 +75,9 @@ func autoDiscoverers(pkgs []*packages.Package) []EntryDiscoverer {
 	}
 	if pkgImports(pkgs, isGRPCImport) {
 		discoverers = append(discoverers, NewGRPC())
+	}
+	if pkgImports(pkgs, isCobraImport) || pkgImports(pkgs, isUrfaveCLIImport) {
+		discoverers = append(discoverers, NewCLI())
 	}
 	discoverers = append(discoverers, NewStdlib())
 	return discoverers
@@ -130,6 +132,8 @@ func entryDedupeKey(entry EntryPoint) string {
 	switch entry.Kind {
 	case protocol.EntryKindGRPC:
 		return string(entry.Kind) + "|" + entry.Service + "|" + entry.Method
+	case protocol.EntryKindCLI:
+		return string(entry.Kind) + "|" + entry.Command
 	default:
 		return string(entry.Kind) + "|" + entry.Method + "|" + entry.Path
 	}

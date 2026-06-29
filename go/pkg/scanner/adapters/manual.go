@@ -94,6 +94,22 @@ func manualEntryToPoint(item manualEntry, ctx *ScanContext) (EntryPoint, bool) {
 			}
 		}
 		return entry, true
+	case protocol.EntryKindCLI:
+		command := strings.TrimSpace(item.Command)
+		if command == "" {
+			return EntryPoint{}, false
+		}
+		entry := EntryPoint{
+			Kind:    kind,
+			Command: command,
+		}
+		if item.Handler != "" {
+			if ref, ok := ctx.FindFuncByName(item.Handler); ok {
+				entry.Handler = ref
+				entry.HasHandler = true
+			}
+		}
+		return entry, true
 	default:
 		return EntryPoint{}, false
 	}

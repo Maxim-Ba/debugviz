@@ -33,7 +33,7 @@
 | 1.3 | Call graph (intra/inter-package) | P1 | 4d | [x] |
 | 1.4 | CLI `debugviz scan` (`--framework auto`) | P0 | 1d | [x] |
 | 1.5 | gRPC entry discovery | P1 | 3d | [x] |
-| 1.6 | CLI entry discovery (cobra/urfave) | P2 | 2d | [ ] |
+| 1.6 | CLI entry discovery (cobra/urfave) | P2 | 2d | [x] |
 | 1.7 | Worker entry discovery (best-effort) | P2 | 2d | [ ] |
 
 ## Epic 2: Debug Server (M1–M2)
