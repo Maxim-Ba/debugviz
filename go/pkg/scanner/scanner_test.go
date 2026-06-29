@@ -3,6 +3,7 @@ package scanner
 import (
 	"path/filepath"
 	"runtime"
+	"strings"
 	"testing"
 	"time"
 
@@ -86,6 +87,70 @@ func TestScanDemoHTTP(t *testing.T) {
 	}
 	if !found {
 		t.Fatalf("missing import edge %q (handler -> service)", wantEdge)
+	}
+
+	var entryPoints int
+	entryRoutes := make(map[string]struct{})
+	for _, node := range graph.Nodes {
+		if node.Type != protocol.NodeTypeEntryPoint {
+			continue
+		}
+		entryPoints++
+		if node.Kind != protocol.EntryKindHTTP {
+			t.Fatalf("entry_point %q: kind = %q, want http", node.ID, node.Kind)
+		}
+		method, _ := node.Metadata["method"].(string)
+		path, _ := node.Metadata["path"].(string)
+		entryRoutes[method+" "+path] = struct{}{}
+	}
+	if entryPoints < 6 {
+		t.Fatalf("entry_points = %d, want at least 6 demo/http routes", entryPoints)
+	}
+
+	wantRoutes := []string{
+		"GET /health",
+		"GET /api/users/",
+		"POST /api/users/",
+		"GET /api/users/{id}",
+		"GET /api/items/",
+		"GET /api/items/{id}",
+	}
+	for _, route := range wantRoutes {
+		if _, ok := entryRoutes[route]; !ok {
+			t.Fatalf("missing HTTP route %q in graph", route)
+		}
+	}
+
+	var entryHandles int
+	for _, edge := range graph.Edges {
+		if edge.Type == protocol.EdgeTypeEntryHandles {
+			entryHandles++
+		}
+	}
+	if entryHandles == 0 {
+		t.Fatal("expected entry_handles edges for named handlers")
+	}
+
+	wantHandles := map[string]string{
+		"GET /api/users/{id}": "func:demo/http/internal/handler/users.go:GetByID",
+		"GET /api/items/{id}": "func:demo/http/internal/handler/items.go:GetByID",
+	}
+	for route, wantTarget := range wantHandles {
+		method, path, _ := strings.Cut(route, " ")
+		entryID := entryNodeID(protocol.EntryKindHTTP, method, path)
+		found := false
+		for _, edge := range graph.Edges {
+			if edge.Type != protocol.EdgeTypeEntryHandles || edge.Source != entryID {
+				continue
+			}
+			if edge.Target == wantTarget {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("route %q: missing entry_handles -> %q", route, wantTarget)
+		}
 	}
 }
 

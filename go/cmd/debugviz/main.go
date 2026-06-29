@@ -15,6 +15,7 @@ var version = "dev"
 var (
 	scanOutput       string
 	scanIncludeTests bool
+	scanFramework    string
 )
 
 func main() {
@@ -38,7 +39,7 @@ func main() {
 		RunE:  runScan,
 	}
 	scanCmd.Flags().StringVarP(&scanOutput, "output", "o", "", "Write graph JSON to file (default: stdout)")
-	scanCmd.Flags().BoolVar(&scanIncludeTests, "include-tests", false, "Include *_test.go files")
+	scanCmd.Flags().StringVar(&scanFramework, "framework", "auto", "HTTP entry discoverer: auto, chi, gin, echo, stdlib, none")
 	root.AddCommand(scanCmd)
 
 	if err := root.Execute(); err != nil {
@@ -47,7 +48,10 @@ func main() {
 }
 
 func runScan(_ *cobra.Command, args []string) error {
-	graph, err := scanner.Scan(args, scanner.Options{IncludeTests: scanIncludeTests})
+	graph, err := scanner.Scan(args, scanner.Options{
+		IncludeTests: scanIncludeTests,
+		Framework:    scanFramework,
+	})
 	if err != nil {
 		return err
 	}

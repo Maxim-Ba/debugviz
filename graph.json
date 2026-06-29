@@ -1,0 +1,573 @@
+{
+  "version": "2",
+  "generated_at": "2026-06-29T05:57:51Z",
+  "root_module": "github.com/Maxim-Ba/debugviz",
+  "nodes": [
+    {
+      "id": "entry:http:GET:/",
+      "type": "entry_point",
+      "name": "GET /",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/"
+      }
+    },
+    {
+      "id": "entry:http:GET:/api/items/",
+      "type": "entry_point",
+      "name": "GET /api/items/",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/items/"
+      }
+    },
+    {
+      "id": "entry:http:GET:/api/items/{id}",
+      "type": "entry_point",
+      "name": "GET /api/items/{id}",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/items/{id}"
+      }
+    },
+    {
+      "id": "entry:http:GET:/api/users/",
+      "type": "entry_point",
+      "name": "GET /api/users/",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/users/"
+      }
+    },
+    {
+      "id": "entry:http:GET:/api/users/{id}",
+      "type": "entry_point",
+      "name": "GET /api/users/{id}",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/users/{id}"
+      }
+    },
+    {
+      "id": "entry:http:GET:/health",
+      "type": "entry_point",
+      "name": "GET /health",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/health"
+      }
+    },
+    {
+      "id": "entry:http:GET:/{id}",
+      "type": "entry_point",
+      "name": "GET /{id}",
+      "kind": "http",
+      "metadata": {
+        "method": "GET",
+        "path": "/{id}"
+      }
+    },
+    {
+      "id": "entry:http:POST:/",
+      "type": "entry_point",
+      "name": "POST /",
+      "kind": "http",
+      "metadata": {
+        "method": "POST",
+        "path": "/"
+      }
+    },
+    {
+      "id": "entry:http:POST:/api/users/",
+      "type": "entry_point",
+      "name": "POST /api/users/",
+      "kind": "http",
+      "metadata": {
+        "method": "POST",
+        "path": "/api/users/"
+      }
+    },
+    {
+      "id": "file:demo/http/internal/handler/items.go",
+      "type": "file",
+      "name": "items.go",
+      "path": "demo/http/internal/handler/items.go"
+    },
+    {
+      "id": "file:demo/http/internal/handler/users.go",
+      "type": "file",
+      "name": "users.go",
+      "path": "demo/http/internal/handler/users.go"
+    },
+    {
+      "id": "file:demo/http/internal/middleware/logging.go",
+      "type": "file",
+      "name": "logging.go",
+      "path": "demo/http/internal/middleware/logging.go"
+    },
+    {
+      "id": "file:demo/http/internal/model/item.go",
+      "type": "file",
+      "name": "item.go",
+      "path": "demo/http/internal/model/item.go"
+    },
+    {
+      "id": "file:demo/http/internal/model/user.go",
+      "type": "file",
+      "name": "user.go",
+      "path": "demo/http/internal/model/user.go"
+    },
+    {
+      "id": "file:demo/http/internal/repository/item.go",
+      "type": "file",
+      "name": "item.go",
+      "path": "demo/http/internal/repository/item.go"
+    },
+    {
+      "id": "file:demo/http/internal/repository/user.go",
+      "type": "file",
+      "name": "user.go",
+      "path": "demo/http/internal/repository/user.go"
+    },
+    {
+      "id": "file:demo/http/internal/router/router.go",
+      "type": "file",
+      "name": "router.go",
+      "path": "demo/http/internal/router/router.go"
+    },
+    {
+      "id": "file:demo/http/internal/service/item.go",
+      "type": "file",
+      "name": "item.go",
+      "path": "demo/http/internal/service/item.go"
+    },
+    {
+      "id": "file:demo/http/internal/service/user.go",
+      "type": "file",
+      "name": "user.go",
+      "path": "demo/http/internal/service/user.go"
+    },
+    {
+      "id": "file:demo/http/main.go",
+      "type": "file",
+      "name": "main.go",
+      "path": "demo/http/main.go"
+    },
+    {
+      "id": "func:demo/http/internal/handler/items.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/handler/items.go",
+      "line": 21,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/items.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/handler/items.go",
+      "line": 41,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:Create",
+      "type": "function",
+      "name": "Create",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 54,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 24,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 44,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/router/router.go:\u003canonymous\u003e",
+      "type": "function",
+      "name": "\u003canonymous\u003e",
+      "file": "demo/http/internal/router/router.go",
+      "line": 27,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "type": "middleware",
+      "name": "Logging",
+      "file": "demo/http/internal/middleware/logging.go"
+    },
+    {
+      "id": "pkg:context",
+      "type": "package",
+      "name": "context",
+      "path": "context"
+    },
+    {
+      "id": "pkg:encoding/json",
+      "type": "package",
+      "name": "json",
+      "path": "encoding/json"
+    },
+    {
+      "id": "pkg:errors",
+      "type": "package",
+      "name": "errors",
+      "path": "errors"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "type": "package",
+      "name": "http",
+      "path": "demo/http"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "type": "package",
+      "name": "handler",
+      "path": "demo/http/internal/handler"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/middleware",
+      "type": "package",
+      "name": "middleware",
+      "path": "demo/http/internal/middleware"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/model",
+      "type": "package",
+      "name": "model",
+      "path": "demo/http/internal/model"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository",
+      "type": "package",
+      "name": "repository",
+      "path": "demo/http/internal/repository"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "type": "package",
+      "name": "router",
+      "path": "demo/http/internal/router"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "type": "package",
+      "name": "service",
+      "path": "demo/http/internal/service"
+    },
+    {
+      "id": "pkg:github.com/go-chi/chi/v5",
+      "type": "package",
+      "name": "v5",
+      "path": "github.com/go-chi/chi/v5"
+    },
+    {
+      "id": "pkg:log",
+      "type": "package",
+      "name": "log",
+      "path": "log"
+    },
+    {
+      "id": "pkg:net/http",
+      "type": "package",
+      "name": "http",
+      "path": "net/http"
+    },
+    {
+      "id": "pkg:strconv",
+      "type": "package",
+      "name": "strconv",
+      "path": "strconv"
+    },
+    {
+      "id": "pkg:time",
+      "type": "package",
+      "name": "time",
+      "path": "time"
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:entry_handles:entry:http:GET:-:func:demo-http-internal-handler-users-go:List",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/",
+      "target": "func:demo/http/internal/handler/users.go:List"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-api-items-:func:demo-http-internal-handler-items-go:List",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/api/items/",
+      "target": "func:demo/http/internal/handler/items.go:List"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-api-items-:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/api/items/",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-api-items-{id}:func:demo-http-internal-handler-items-go:GetByID",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/api/items/{id}",
+      "target": "func:demo/http/internal/handler/items.go:GetByID"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-api-items-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/api/items/{id}",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-api-users-:func:demo-http-internal-handler-users-go:List",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/api/users/",
+      "target": "func:demo/http/internal/handler/users.go:List"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-api-users-:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/api/users/",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-api-users-{id}:func:demo-http-internal-handler-users-go:GetByID",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/api/users/{id}",
+      "target": "func:demo/http/internal/handler/users.go:GetByID"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-api-users-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/api/users/{id}",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-health:func:demo-http-internal-router-router-go:\u003canonymous\u003e",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/health",
+      "target": "func:demo/http/internal/router/router.go:\u003canonymous\u003e"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-health:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/health",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:GET:-{id}:func:demo-http-internal-handler-users-go:GetByID",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/{id}",
+      "target": "func:demo/http/internal/handler/users.go:GetByID"
+    },
+    {
+      "id": "edge:middleware:entry:http:GET:-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/{id}",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:POST:-:func:demo-http-internal-handler-users-go:Create",
+      "type": "entry_handles",
+      "source": "entry:http:POST:/",
+      "target": "func:demo/http/internal/handler/users.go:Create"
+    },
+    {
+      "id": "edge:middleware:entry:http:POST:-:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:POST:/",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:entry_handles:entry:http:POST:-api-users-:func:demo-http-internal-handler-users-go:Create",
+      "type": "entry_handles",
+      "source": "entry:http:POST:/api/users/",
+      "target": "func:demo/http/internal/handler/users.go:Create"
+    },
+    {
+      "id": "edge:middleware:entry:http:POST:-api-users-:mw:demo-http-internal-middleware-logging-go:Logging:0",
+      "type": "middleware_chain",
+      "source": "entry:http:POST:/api/users/",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-demo-http-internal-router",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:log",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:log"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:net-http",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:encoding-json",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:encoding/json"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:errors",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:errors"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:github-com-Maxim-Ba-debugviz-demo-http-internal-model",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/model"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:github-com-Maxim-Ba-debugviz-demo-http-internal-repository",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:github-com-Maxim-Ba-debugviz-demo-http-internal-service",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:github-com-go-chi-chi-v5",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:github.com/go-chi/chi/v5"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:net-http",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:strconv",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:strconv"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-middleware:log",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/middleware",
+      "target": "pkg:log"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-middleware:net-http",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/middleware",
+      "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-middleware:time",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/middleware",
+      "target": "pkg:time"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-repository:context",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository",
+      "target": "pkg:context"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-repository:errors",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository",
+      "target": "pkg:errors"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-repository:github-com-Maxim-Ba-debugviz-demo-http-internal-model",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/model"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-demo-http-internal-handler",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-demo-http-internal-middleware",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/middleware"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-demo-http-internal-repository",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-demo-http-internal-service",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-go-chi-chi-v5",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/go-chi/chi/v5"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:net-http",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-service:context",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "target": "pkg:context"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-service:github-com-Maxim-Ba-debugviz-demo-http-internal-model",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/model"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-service:github-com-Maxim-Ba-debugviz-demo-http-internal-repository",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    }
+  ]
+}

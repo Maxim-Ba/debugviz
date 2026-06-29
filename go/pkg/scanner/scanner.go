@@ -11,6 +11,7 @@ import (
 	"golang.org/x/tools/go/packages"
 
 	"github.com/Maxim-Ba/debugviz/go/pkg/protocol"
+	"github.com/Maxim-Ba/debugviz/go/pkg/scanner/adapters"
 )
 
 const packageLoadMode = packages.NeedName |
@@ -18,7 +19,9 @@ const packageLoadMode = packages.NeedName |
 	packages.NeedCompiledGoFiles |
 	packages.NeedImports |
 	packages.NeedModule |
-	packages.NeedDeps
+	packages.NeedDeps |
+	packages.NeedSyntax |
+	packages.NeedTypes
 
 // Options configures a static graph scan.
 type Options struct {
@@ -26,6 +29,8 @@ type Options struct {
 	IncludeTests bool
 	// Dir is the working directory for go/packages (defaults to os.Getwd).
 	Dir string
+	// Framework selects HTTP entry discoverers (auto, chi, gin, echo, stdlib, none).
+	Framework string
 }
 
 // Scan loads Go packages matching patterns and builds a package/file graph
@@ -74,6 +79,13 @@ func Scan(patterns []string, opts Options) (*protocol.Graph, error) {
 		}
 		builder.addImportEdges(pkg)
 	}
+
+	scanCtx := adapters.NewScanContext(rootModule, pkgs)
+	entries, err := adapters.DiscoverEntries(opts.Framework, dir, scanCtx, pkgs)
+	if err != nil {
+		return nil, err
+	}
+	builder.addEntryPoints(entries)
 
 	return builder.build(), nil
 }
@@ -170,6 +182,85 @@ func (b *graphBuilder) addImportEdges(pkg *packages.Package) {
 			Source: sourceID,
 			Target: targetID,
 		}
+	}
+}
+
+func (b *graphBuilder) addEntryPoints(entries []adapters.EntryPoint) {
+	for _, entry := range entries {
+		if entry.Kind != protocol.EntryKindHTTP {
+			continue
+		}
+
+		entryID := entryNodeID(entry.Kind, entry.Method, entry.Path)
+		b.nodes[entryID] = protocol.Node{
+			ID:   entryID,
+			Type: protocol.NodeTypeEntryPoint,
+			Kind: entry.Kind,
+			Name: httpEntryName(entry.Method, entry.Path),
+			Metadata: map[string]any{
+				"method": entry.Method,
+				"path":   entry.Path,
+			},
+		}
+
+		if entry.HasHandler {
+			b.addFunctionNode(entry.Handler)
+			handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
+			edgeID := entryHandlesEdgeID(entryID, handlerID)
+			b.edges[edgeID] = protocol.Edge{
+				ID:     edgeID,
+				Type:   protocol.EdgeTypeEntryHandles,
+				Source: entryID,
+				Target: handlerID,
+			}
+		}
+
+		for i, mw := range entry.Middleware {
+			b.addMiddlewareNode(mw)
+			mwID := middlewareNodeID(mw.File, mw.Name)
+			edgeID := middlewareChainEdgeID(entryID, mwID, i)
+			b.edges[edgeID] = protocol.Edge{
+				ID:     edgeID,
+				Type:   protocol.EdgeTypeMiddlewareChain,
+				Source: entryID,
+				Target: mwID,
+				Order:  i,
+			}
+		}
+	}
+}
+
+func (b *graphBuilder) addFunctionNode(ref adapters.HandlerRef) {
+	if ref.File == "" || ref.Name == "" {
+		return
+	}
+	nodeID := functionNodeID(ref.File, ref.Name)
+	if _, ok := b.nodes[nodeID]; ok {
+		return
+	}
+	b.nodes[nodeID] = protocol.Node{
+		ID:      nodeID,
+		Type:    protocol.NodeTypeFunction,
+		Name:    ref.Name,
+		File:    ref.File,
+		Line:    ref.Line,
+		Package: ref.Package,
+	}
+}
+
+func (b *graphBuilder) addMiddlewareNode(ref adapters.HandlerRef) {
+	if ref.File == "" || ref.Name == "" {
+		return
+	}
+	nodeID := middlewareNodeID(ref.File, ref.Name)
+	if _, ok := b.nodes[nodeID]; ok {
+		return
+	}
+	b.nodes[nodeID] = protocol.Node{
+		ID:   nodeID,
+		Type: protocol.NodeTypeMiddleware,
+		Name: ref.Name,
+		File: ref.File,
 	}
 }
 

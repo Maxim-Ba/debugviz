@@ -1,0 +1,5 @@
+entries:
+  - kind: http
+    method: GET
+    path: /api/custom
+    handler: demo/http/internal/handler/users.GetByID
