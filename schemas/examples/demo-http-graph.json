@@ -1,0 +1,127 @@
+{
+  "version": "2",
+  "generated_at": "2026-06-28T12:00:00Z",
+  "root_module": "github.com/Maxim-Ba/debugviz",
+  "nodes": [
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "type": "package",
+      "name": "http",
+      "path": "demo/http"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "type": "package",
+      "name": "handler",
+      "path": "demo/http/internal/handler"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "type": "package",
+      "name": "service",
+      "path": "demo/http/internal/service"
+    },
+    {
+      "id": "file:demo/http/main.go",
+      "type": "file",
+      "name": "main.go",
+      "path": "demo/http/main.go"
+    },
+    {
+      "id": "file:demo/http/internal/handler/users.go",
+      "type": "file",
+      "name": "users.go",
+      "path": "demo/http/internal/handler/users.go"
+    },
+    {
+      "id": "file:demo/http/internal/service/user.go",
+      "type": "file",
+      "name": "user.go",
+      "path": "demo/http/internal/service/user.go"
+    },
+    {
+      "id": "func:demo/http/main.go:main",
+      "type": "function",
+      "name": "main",
+      "file": "demo/http/main.go",
+      "line": 12,
+      "package": "main"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 18,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/service/user.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/service/user.go",
+      "line": 24,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "type": "middleware",
+      "name": "Logging",
+      "file": "demo/http/internal/middleware/logging.go"
+    },
+    {
+      "id": "entry:http:GET:/api/users/{id}",
+      "type": "entry_point",
+      "kind": "http",
+      "name": "GET /api/users/{id}",
+      "metadata": {
+        "method": "GET",
+        "path": "/api/users/{id}"
+      }
+    },
+    {
+      "id": "entry:http:GET:/health",
+      "type": "entry_point",
+      "kind": "http",
+      "name": "GET /health",
+      "metadata": {
+        "method": "GET",
+        "path": "/health"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge:imports:demo-http:handler",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "edge:imports:handler:service",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/handler",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "edge:entry_handles:users-get",
+      "type": "entry_handles",
+      "source": "entry:http:GET:/api/users/{id}",
+      "target": "func:demo/http/internal/handler/users.go:GetByID"
+    },
+    {
+      "id": "edge:calls:handler-service",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:GetByID",
+      "target": "func:demo/http/internal/service/user.go:GetByID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:middleware:logging",
+      "type": "middleware_chain",
+      "source": "entry:http:GET:/api/users/{id}",
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
+    }
+  ]
+}

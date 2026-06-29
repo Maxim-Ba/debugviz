@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://debugviz.dev/schemas/trace-event.schema.json",
+  "title": "DebugViz Trace Event",
+  "description": "Single span event emitted by the Go runtime exporter (schema v2).",
+  "type": "object",
+  "required": [
+    "trace_id",
+    "span_id",
+    "name",
+    "file",
+    "line",
+    "start_us",
+    "duration_us",
+    "status"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "trace_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Trace identifier (UUID recommended)."
+    },
+    "span_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Span identifier (UUID recommended)."
+    },
+    "parent_span_id": {
+      "type": ["string", "null"],
+      "description": "Parent span id; null for root span."
+    },
+    "name": {
+      "type": "string",
+      "description": "Qualified function or span name."
+    },
+    "file": {
+      "type": "string",
+      "description": "Source file path relative to module root."
+    },
+    "line": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "start_us": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Start timestamp in microseconds since Unix epoch."
+    },
+    "duration_us": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Span duration in microseconds."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "error"]
+    },
+    "entry_kind": {
+      "type": "string",
+      "enum": ["http", "grpc", "cli", "worker"],
+      "description": "Set only on root span."
+    },
+    "entry_name": {
+      "type": "string",
+      "description": "Human-readable entry point name; set only on root span."
+    }
+  }
+}

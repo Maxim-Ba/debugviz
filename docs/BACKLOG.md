@@ -21,7 +21,7 @@
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
 | 0.1 | Инициализация monorepo и tooling | P0 | 2d | [x] |
-| 0.2 | JSON-схемы (entry_point, trace v2) | P0 | 1d | [ ] |
+| 0.2 | JSON-схемы (entry_point, trace v2) | P0 | 1d | [x] |
 | 0.3 | Demo suite: demo/http (chi REST) | P0 | 2d | [ ] |
 
 ## Epic 1: Static Scanner (M1 + M5)

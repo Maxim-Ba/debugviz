@@ -1,0 +1,204 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://debugviz.dev/schemas/graph.schema.json",
+  "title": "DebugViz Graph",
+  "description": "Static dependency and call graph (schema v2).",
+  "type": "object",
+  "required": ["version", "nodes", "edges"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "string",
+      "const": "2"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "root_module": {
+      "type": "string",
+      "description": "Go module path of the scanned project."
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/edge"
+      }
+    }
+  },
+  "$defs": {
+    "nodeType": {
+      "type": "string",
+      "enum": ["package", "file", "function", "entry_point", "middleware"]
+    },
+    "entryKind": {
+      "type": "string",
+      "enum": ["http", "grpc", "cli", "worker"]
+    },
+    "node": {
+      "type": "object",
+      "required": ["id", "type", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "$ref": "#/$defs/nodeType"
+        },
+        "name": {
+          "type": "string"
+        },
+        "kind": {
+          "$ref": "#/$defs/entryKind"
+        },
+        "path": {
+          "type": "string",
+          "description": "Import path (package) or file path (file node)."
+        },
+        "file": {
+          "type": "string",
+          "description": "Source file path for function or middleware nodes."
+        },
+        "line": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "package": {
+          "type": "string",
+          "description": "Go package import path for function nodes."
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Entry-point metadata per kind (method/path, service/method, command, queue/job)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "entry_point" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["kind", "metadata"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "package" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["path"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "file" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["path"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "function" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["file", "line", "package"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "middleware" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["file"]
+          }
+        }
+      ]
+    },
+    "edgeType": {
+      "type": "string",
+      "enum": ["imports", "calls", "entry_handles", "middleware_chain"]
+    },
+    "callConfidence": {
+      "type": "string",
+      "enum": ["static", "interface", "unknown"]
+    },
+    "edge": {
+      "type": "object",
+      "required": ["type", "source", "target"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/edgeType"
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "target": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "$ref": "#/$defs/callConfidence"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Middleware position in chain (0 = outermost)."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "calls" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["confidence"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": { "const": "middleware_chain" }
+            },
+            "required": ["type"]
+          },
+          "then": {
+            "required": ["order"]
+          }
+        }
+      ]
+    }
+  }
+}
