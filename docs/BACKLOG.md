@@ -6,7 +6,7 @@
 
 | Milestone | Недели | Задачи | Статус |
 |-----------|--------|--------|--------|
-| M0 Foundation | 1 | 0.1–0.3 | [~] |
+| M0 Foundation | 1 | 0.1–0.3 | [x] |
 | M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [ ] |
 | M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
 | M3 Codegen | 2 | 5.1–5.4 | [ ] |
@@ -22,7 +22,7 @@
 |----|--------|-----------|--------|--------|
 | 0.1 | Инициализация monorepo и tooling | P0 | 2d | [x] |
 | 0.2 | JSON-схемы (entry_point, trace v2) | P0 | 1d | [x] |
-| 0.3 | Demo suite: demo/http (chi REST) | P0 | 2d | [ ] |
+| 0.3 | Demo suite: demo/http (chi REST) | P0 | 2d | [x] |
 
 ## Epic 1: Static Scanner (M1 + M5)
 

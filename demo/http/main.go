@@ -4,18 +4,12 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
+	"github.com/Maxim-Ba/debugviz/demo/http/internal/router"
 )
 
 func main() {
-	r := chi.NewRouter()
-	r.Get("/health", func(w http.ResponseWriter, _ *http.Request) {
-		w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-		_, _ = w.Write([]byte("ok"))
-	})
-
 	log.Println("demo/http listening on :8080")
-	if err := http.ListenAndServe(":8080", r); err != nil {
+	if err := http.ListenAndServe(":8080", router.New()); err != nil {
 		log.Fatal(err)
 	}
 }
