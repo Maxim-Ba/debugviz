@@ -21,7 +21,8 @@ const packageLoadMode = packages.NeedName |
 	packages.NeedModule |
 	packages.NeedDeps |
 	packages.NeedSyntax |
-	packages.NeedTypes
+	packages.NeedTypes |
+	packages.NeedTypesInfo
 
 // Options configures a static graph scan.
 type Options struct {
@@ -86,6 +87,7 @@ func Scan(patterns []string, opts Options) (*protocol.Graph, error) {
 		return nil, err
 	}
 	builder.addEntryPoints(entries)
+	builder.addCallGraph(pkgs)
 
 	return builder.build(), nil
 }

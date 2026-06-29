@@ -152,6 +152,41 @@ func TestScanDemoHTTP(t *testing.T) {
 			t.Fatalf("route %q: missing entry_handles -> %q", route, wantTarget)
 		}
 	}
+
+	wantCalls := []struct {
+		source     string
+		target     string
+		confidence protocol.CallConfidence
+	}{
+		{
+			source:     "func:demo/http/internal/handler/users.go:GetByID",
+			target:     "func:demo/http/internal/service/user.go:GetByID",
+			confidence: protocol.CallConfidenceStatic,
+		},
+		{
+			source:     "func:demo/http/internal/service/user.go:GetByID",
+			target:     "func:demo/http/internal/repository/user.go:FindByID",
+			confidence: protocol.CallConfidenceStatic,
+		},
+	}
+	for _, want := range wantCalls {
+		found := false
+		for _, edge := range graph.Edges {
+			if edge.Type != protocol.EdgeTypeCalls {
+				continue
+			}
+			if edge.Source == want.source && edge.Target == want.target {
+				if edge.Confidence != want.confidence {
+					t.Fatalf("call %s -> %s: confidence = %q, want %q", want.source, want.target, edge.Confidence, want.confidence)
+				}
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Fatalf("missing calls edge %s -> %s", want.source, want.target)
+		}
+	}
 }
 
 func TestScanDemoHTTPPerformance(t *testing.T) {

@@ -1,6 +1,6 @@
 {
   "version": "2",
-  "generated_at": "2026-06-29T05:57:51Z",
+  "generated_at": "2026-06-29T07:00:58Z",
   "root_module": "github.com/Maxim-Ba/debugviz",
   "nodes": [
     {
@@ -176,6 +176,14 @@
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
     },
     {
+      "id": "func:demo/http/internal/handler/items.go:NewItemHandler",
+      "type": "function",
+      "name": "NewItemHandler",
+      "file": "demo/http/internal/handler/items.go",
+      "line": 17,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
       "id": "func:demo/http/internal/handler/users.go:Create",
       "type": "function",
       "name": "Create",
@@ -200,12 +208,172 @@
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
     },
     {
+      "id": "func:demo/http/internal/handler/users.go:NewUserHandler",
+      "type": "function",
+      "name": "NewUserHandler",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 20,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:parseID",
+      "type": "function",
+      "name": "parseID",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 74,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:writeError",
+      "type": "function",
+      "name": "writeError",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 84,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/handler/users.go:writeJSON",
+      "type": "function",
+      "name": "writeJSON",
+      "file": "demo/http/internal/handler/users.go",
+      "line": 78,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/handler"
+    },
+    {
+      "id": "func:demo/http/internal/repository/item.go:FindByID",
+      "type": "function",
+      "name": "FindByID",
+      "file": "demo/http/internal/repository/item.go",
+      "line": 25,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/item.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/repository/item.go",
+      "line": 33,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/item.go:NewItemRepository",
+      "type": "function",
+      "name": "NewItemRepository",
+      "file": "demo/http/internal/repository/item.go",
+      "line": 16,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/user.go:Create",
+      "type": "function",
+      "name": "Create",
+      "file": "demo/http/internal/repository/user.go",
+      "line": 41,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/user.go:FindByID",
+      "type": "function",
+      "name": "FindByID",
+      "file": "demo/http/internal/repository/user.go",
+      "line": 25,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/user.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/repository/user.go",
+      "line": 33,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "func:demo/http/internal/repository/user.go:NewUserRepository",
+      "type": "function",
+      "name": "NewUserRepository",
+      "file": "demo/http/internal/repository/user.go",
+      "line": 16,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
       "id": "func:demo/http/internal/router/router.go:\u003canonymous\u003e",
       "type": "function",
       "name": "\u003canonymous\u003e",
       "file": "demo/http/internal/router/router.go",
       "line": 27,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "func:demo/http/internal/router/router.go:New",
+      "type": "function",
+      "name": "New",
+      "file": "demo/http/internal/router/router.go",
+      "line": 14,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "func:demo/http/internal/service/item.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/service/item.go",
+      "line": 18,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/item.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/service/item.go",
+      "line": 22,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/item.go:NewItemService",
+      "type": "function",
+      "name": "NewItemService",
+      "file": "demo/http/internal/service/item.go",
+      "line": 14,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/user.go:Create",
+      "type": "function",
+      "name": "Create",
+      "file": "demo/http/internal/service/user.go",
+      "line": 26,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/user.go:GetByID",
+      "type": "function",
+      "name": "GetByID",
+      "file": "demo/http/internal/service/user.go",
+      "line": 18,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/user.go:List",
+      "type": "function",
+      "name": "List",
+      "file": "demo/http/internal/service/user.go",
+      "line": 22,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/internal/service/user.go:NewUserService",
+      "type": "function",
+      "name": "NewUserService",
+      "file": "demo/http/internal/service/user.go",
+      "line": 14,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "func:demo/http/main.go:main",
+      "type": "function",
+      "name": "main",
+      "file": "demo/http/main.go",
+      "line": 10,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http"
     },
     {
       "id": "mw:demo/http/internal/middleware/logging.go:Logging",
@@ -412,6 +580,216 @@
       "type": "middleware_chain",
       "source": "entry:http:POST:/api/users/",
       "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:GetByID:func:demo-http-internal-handler-users-go:parseID",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:parseID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:GetByID:func:demo-http-internal-handler-users-go:writeError",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:writeError",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:GetByID:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:GetByID:func:demo-http-internal-service-item-go:GetByID",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:GetByID",
+      "target": "func:demo/http/internal/service/item.go:GetByID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:List:func:demo-http-internal-handler-users-go:writeError",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:List",
+      "target": "func:demo/http/internal/handler/users.go:writeError",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:List:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:List",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-items-go:List:func:demo-http-internal-service-item-go:List",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/items.go:List",
+      "target": "func:demo/http/internal/service/item.go:List",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:Create:func:demo-http-internal-handler-users-go:writeError",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:Create",
+      "target": "func:demo/http/internal/handler/users.go:writeError",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:Create:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:Create",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:Create:func:demo-http-internal-service-user-go:Create",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:Create",
+      "target": "func:demo/http/internal/service/user.go:Create",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:GetByID:func:demo-http-internal-handler-users-go:parseID",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:parseID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:GetByID:func:demo-http-internal-handler-users-go:writeError",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:writeError",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:GetByID:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:GetByID",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:GetByID:func:demo-http-internal-service-user-go:GetByID",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:GetByID",
+      "target": "func:demo/http/internal/service/user.go:GetByID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:List:func:demo-http-internal-handler-users-go:writeError",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:List",
+      "target": "func:demo/http/internal/handler/users.go:writeError",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:List:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:List",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:List:func:demo-http-internal-service-user-go:List",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:List",
+      "target": "func:demo/http/internal/service/user.go:List",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-handler-users-go:writeError:func:demo-http-internal-handler-users-go:writeJSON",
+      "type": "calls",
+      "source": "func:demo/http/internal/handler/users.go:writeError",
+      "target": "func:demo/http/internal/handler/users.go:writeJSON",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-handler-items-go:NewItemHandler",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/handler/items.go:NewItemHandler",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-handler-users-go:NewUserHandler",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/handler/users.go:NewUserHandler",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-repository-item-go:NewItemRepository",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/repository/item.go:NewItemRepository",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-repository-user-go:NewUserRepository",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/repository/user.go:NewUserRepository",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-service-item-go:NewItemService",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/service/item.go:NewItemService",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-service-user-go:NewUserService",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:demo/http/internal/service/user.go:NewUserService",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-item-go:GetByID:func:demo-http-internal-repository-item-go:FindByID",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/item.go:GetByID",
+      "target": "func:demo/http/internal/repository/item.go:FindByID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-item-go:List:func:demo-http-internal-repository-item-go:List",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/item.go:List",
+      "target": "func:demo/http/internal/repository/item.go:List",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:Create:func:demo-http-internal-repository-user-go:Create",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:Create",
+      "target": "func:demo/http/internal/repository/user.go:Create",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:GetByID:func:demo-http-internal-repository-user-go:FindByID",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:GetByID",
+      "target": "func:demo/http/internal/repository/user.go:FindByID",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:List:func:demo-http-internal-repository-user-go:List",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:List",
+      "target": "func:demo/http/internal/repository/user.go:List",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-main-go:main:func:demo-http-internal-router-router-go:New",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:demo/http/internal/router/router.go:New",
+      "confidence": "unknown"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-demo-http-internal-router",
