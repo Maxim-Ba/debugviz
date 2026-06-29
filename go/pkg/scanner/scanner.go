@@ -30,7 +30,7 @@ type Options struct {
 	IncludeTests bool
 	// Dir is the working directory for go/packages (defaults to os.Getwd).
 	Dir string
-	// Framework selects HTTP entry discoverers (auto, chi, gin, echo, stdlib, none).
+	// Framework selects entry discoverers (auto, chi, gin, echo, stdlib, grpc, cli, none).
 	Framework string
 }
 

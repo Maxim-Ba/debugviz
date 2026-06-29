@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"fmt"
 	"strings"
 
 	"golang.org/x/tools/go/packages"
@@ -8,31 +9,53 @@ import (
 
 // Framework names for scanner CLI (--framework).
 const (
-	FrameworkAuto    = "auto"
-	FrameworkChi     = "chi"
-	FrameworkGin     = "gin"
-	FrameworkEcho    = "echo"
-	FrameworkStdlib  = "stdlib"
-	FrameworkNone    = "none"
+	FrameworkAuto   = "auto"
+	FrameworkChi    = "chi"
+	FrameworkGin    = "gin"
+	FrameworkEcho   = "echo"
+	FrameworkStdlib = "stdlib"
+	FrameworkGRPC   = "grpc"
+	FrameworkCLI    = "cli"
+	FrameworkNone   = "none"
 )
 
-// SelectDiscoverers returns entry discoverers for the requested framework mode.
-func SelectDiscoverers(framework string, pkgs []*packages.Package) []EntryDiscoverer {
+// NormalizeFramework validates and canonicalizes a --framework flag value.
+func NormalizeFramework(framework string) (string, error) {
 	switch strings.ToLower(strings.TrimSpace(framework)) {
 	case "", FrameworkAuto:
-		return autoDiscoverers(pkgs)
-	case FrameworkChi:
-		return []EntryDiscoverer{NewChi()}
-	case FrameworkGin:
-		return []EntryDiscoverer{NewGin()}
-	case FrameworkEcho:
-		return []EntryDiscoverer{NewEcho()}
-	case FrameworkStdlib:
-		return []EntryDiscoverer{NewStdlib()}
-	case FrameworkNone:
-		return nil
+		return FrameworkAuto, nil
+	case FrameworkChi, FrameworkGin, FrameworkEcho, FrameworkStdlib, FrameworkGRPC, FrameworkCLI, FrameworkNone:
+		return strings.ToLower(strings.TrimSpace(framework)), nil
 	default:
-		return autoDiscoverers(pkgs)
+		return "", fmt.Errorf("unknown framework %q: want auto, chi, gin, echo, stdlib, grpc, cli", framework)
+	}
+}
+
+// SelectDiscoverers returns entry discoverers for the requested framework mode.
+func SelectDiscoverers(framework string, pkgs []*packages.Package) ([]EntryDiscoverer, error) {
+	mode, err := NormalizeFramework(framework)
+	if err != nil {
+		return nil, err
+	}
+
+	switch mode {
+	case FrameworkAuto:
+		return autoDiscoverers(pkgs), nil
+	case FrameworkChi:
+		return []EntryDiscoverer{NewChi()}, nil
+	case FrameworkGin:
+		return []EntryDiscoverer{NewGin()}, nil
+	case FrameworkEcho:
+		return []EntryDiscoverer{NewEcho()}, nil
+	case FrameworkStdlib:
+		return []EntryDiscoverer{NewStdlib()}, nil
+	case FrameworkGRPC, FrameworkCLI:
+		// gRPC and CLI discoverers are implemented in issues 1.5 and 1.6.
+		return nil, nil
+	case FrameworkNone:
+		return nil, nil
+	default:
+		return nil, fmt.Errorf("unknown framework %q", framework)
 	}
 }
 
@@ -66,8 +89,13 @@ func DiscoverEntries(framework, configDir string, ctx *ScanContext, pkgs []*pack
 }
 
 func discoverWithAdapters(framework string, ctx *ScanContext, pkgs []*packages.Package) ([]EntryPoint, error) {
+	discoverers, err := SelectDiscoverers(framework, pkgs)
+	if err != nil {
+		return nil, err
+	}
+
 	var all []EntryPoint
-	for _, discoverer := range SelectDiscoverers(framework, pkgs) {
+	for _, discoverer := range discoverers {
 		found, err := discoverer.Discover(ctx, pkgs)
 		if err != nil {
 			return nil, err

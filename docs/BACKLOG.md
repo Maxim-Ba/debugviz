@@ -31,7 +31,7 @@
 | 1.1 | Сканер графа пакетов/файлов | P0 | 3d | [x] |
 | 1.2 | HTTP entry discovery (chi/gin/echo/stdlib adapters) | P0 | 4d | [x] |
 | 1.3 | Call graph (intra/inter-package) | P1 | 4d | [x] |
-| 1.4 | CLI `debugviz scan` (`--framework auto`) | P0 | 1d | [ ] |
+| 1.4 | CLI `debugviz scan` (`--framework auto`) | P0 | 1d | [x] |
 | 1.5 | gRPC entry discovery | P1 | 3d | [ ] |
 | 1.6 | CLI entry discovery (cobra/urfave) | P2 | 2d | [ ] |
 | 1.7 | Worker entry discovery (best-effort) | P2 | 2d | [ ] |
