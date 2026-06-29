@@ -189,45 +189,76 @@ func (b *graphBuilder) addImportEdges(pkg *packages.Package) {
 
 func (b *graphBuilder) addEntryPoints(entries []adapters.EntryPoint) {
 	for _, entry := range entries {
-		if entry.Kind != protocol.EntryKindHTTP {
-			continue
+		switch entry.Kind {
+		case protocol.EntryKindHTTP:
+			b.addHTTPEntryPoint(entry)
+		case protocol.EntryKindGRPC:
+			b.addGRPCEntryPoint(entry)
 		}
+	}
+}
 
-		entryID := entryNodeID(entry.Kind, entry.Method, entry.Path)
-		b.nodes[entryID] = protocol.Node{
-			ID:   entryID,
-			Type: protocol.NodeTypeEntryPoint,
-			Kind: entry.Kind,
-			Name: httpEntryName(entry.Method, entry.Path),
-			Metadata: map[string]any{
-				"method": entry.Method,
-				"path":   entry.Path,
-			},
+func (b *graphBuilder) addHTTPEntryPoint(entry adapters.EntryPoint) {
+	entryID := entryNodeID(entry.Kind, entry.Method, entry.Path)
+	b.nodes[entryID] = protocol.Node{
+		ID:   entryID,
+		Type: protocol.NodeTypeEntryPoint,
+		Kind: entry.Kind,
+		Name: httpEntryName(entry.Method, entry.Path),
+		Metadata: map[string]any{
+			"method": entry.Method,
+			"path":   entry.Path,
+		},
+	}
+
+	if entry.HasHandler {
+		b.addFunctionNode(entry.Handler)
+		handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
+		edgeID := entryHandlesEdgeID(entryID, handlerID)
+		b.edges[edgeID] = protocol.Edge{
+			ID:     edgeID,
+			Type:   protocol.EdgeTypeEntryHandles,
+			Source: entryID,
+			Target: handlerID,
 		}
+	}
 
-		if entry.HasHandler {
-			b.addFunctionNode(entry.Handler)
-			handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
-			edgeID := entryHandlesEdgeID(entryID, handlerID)
-			b.edges[edgeID] = protocol.Edge{
-				ID:     edgeID,
-				Type:   protocol.EdgeTypeEntryHandles,
-				Source: entryID,
-				Target: handlerID,
-			}
+	for i, mw := range entry.Middleware {
+		b.addMiddlewareNode(mw)
+		mwID := middlewareNodeID(mw.File, mw.Name)
+		edgeID := middlewareChainEdgeID(entryID, mwID, i)
+		b.edges[edgeID] = protocol.Edge{
+			ID:     edgeID,
+			Type:   protocol.EdgeTypeMiddlewareChain,
+			Source: entryID,
+			Target: mwID,
+			Order:  i,
 		}
+	}
+}
 
-		for i, mw := range entry.Middleware {
-			b.addMiddlewareNode(mw)
-			mwID := middlewareNodeID(mw.File, mw.Name)
-			edgeID := middlewareChainEdgeID(entryID, mwID, i)
-			b.edges[edgeID] = protocol.Edge{
-				ID:     edgeID,
-				Type:   protocol.EdgeTypeMiddlewareChain,
-				Source: entryID,
-				Target: mwID,
-				Order:  i,
-			}
+func (b *graphBuilder) addGRPCEntryPoint(entry adapters.EntryPoint) {
+	entryID := entryNodeID(entry.Kind, entry.Service, entry.Method)
+	b.nodes[entryID] = protocol.Node{
+		ID:   entryID,
+		Type: protocol.NodeTypeEntryPoint,
+		Kind: entry.Kind,
+		Name: grpcEntryName(entry.Service, entry.Method),
+		Metadata: map[string]any{
+			"service": entry.Service,
+			"method":  entry.Method,
+		},
+	}
+
+	if entry.HasHandler {
+		b.addFunctionNode(entry.Handler)
+		handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
+		edgeID := entryHandlesEdgeID(entryID, handlerID)
+		b.edges[edgeID] = protocol.Edge{
+			ID:     edgeID,
+			Type:   protocol.EdgeTypeEntryHandles,
+			Source: entryID,
+			Target: handlerID,
 		}
 	}
 }

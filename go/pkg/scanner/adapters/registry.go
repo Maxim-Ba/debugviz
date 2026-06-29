@@ -5,6 +5,8 @@ import (
 	"strings"
 
 	"golang.org/x/tools/go/packages"
+
+	"github.com/Maxim-Ba/debugviz/go/pkg/protocol"
 )
 
 // Framework names for scanner CLI (--framework).
@@ -49,8 +51,10 @@ func SelectDiscoverers(framework string, pkgs []*packages.Package) ([]EntryDisco
 		return []EntryDiscoverer{NewEcho()}, nil
 	case FrameworkStdlib:
 		return []EntryDiscoverer{NewStdlib()}, nil
-	case FrameworkGRPC, FrameworkCLI:
-		// gRPC and CLI discoverers are implemented in issues 1.5 and 1.6.
+	case FrameworkGRPC:
+		return []EntryDiscoverer{NewGRPC()}, nil
+	case FrameworkCLI:
+		// CLI discoverer is implemented in issue 1.6.
 		return nil, nil
 	case FrameworkNone:
 		return nil, nil
@@ -69,6 +73,9 @@ func autoDiscoverers(pkgs []*packages.Package) []EntryDiscoverer {
 	}
 	if pkgImports(pkgs, isEchoImport) {
 		discoverers = append(discoverers, NewEcho())
+	}
+	if pkgImports(pkgs, isGRPCImport) {
+		discoverers = append(discoverers, NewGRPC())
 	}
 	discoverers = append(discoverers, NewStdlib())
 	return discoverers
@@ -109,7 +116,7 @@ func dedupeEntries(entries []EntryPoint) []EntryPoint {
 	seen := make(map[string]struct{}, len(entries))
 	out := make([]EntryPoint, 0, len(entries))
 	for _, entry := range entries {
-		key := string(entry.Kind) + "|" + entry.Method + "|" + entry.Path
+		key := entryDedupeKey(entry)
 		if _, ok := seen[key]; ok {
 			continue
 		}
@@ -117,4 +124,13 @@ func dedupeEntries(entries []EntryPoint) []EntryPoint {
 		out = append(out, entry)
 	}
 	return out
+}
+
+func entryDedupeKey(entry EntryPoint) string {
+	switch entry.Kind {
+	case protocol.EntryKindGRPC:
+		return string(entry.Kind) + "|" + entry.Service + "|" + entry.Method
+	default:
+		return string(entry.Kind) + "|" + entry.Method + "|" + entry.Path
+	}
 }

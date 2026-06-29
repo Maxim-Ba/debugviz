@@ -13,7 +13,7 @@ func loadPackages(t *testing.T, pattern string) []*packages.Package {
 	t.Helper()
 	root := repoRoot(t)
 	cfg := &packages.Config{
-		Mode: packages.NeedName | packages.NeedSyntax | packages.NeedTypes | packages.NeedImports | packages.NeedModule | packages.NeedCompiledGoFiles,
+		Mode: packages.NeedName | packages.NeedSyntax | packages.NeedTypes | packages.NeedTypesInfo | packages.NeedImports | packages.NeedModule | packages.NeedCompiledGoFiles,
 		Dir:  root,
 	}
 	pkgs, err := packages.Load(cfg, pattern)

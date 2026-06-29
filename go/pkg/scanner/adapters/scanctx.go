@@ -394,6 +394,66 @@ func (c *ScanContext) FindFuncByName(qualified string) (HandlerRef, bool) {
 	return HandlerRef{}, false
 }
 
+func (c *ScanContext) packagePathFromSelector(pkg *packages.Package, sel *ast.SelectorExpr) string {
+	if sel == nil {
+		return ""
+	}
+	pkgIdent, ok := sel.X.(*ast.Ident)
+	if !ok {
+		return ""
+	}
+
+	if pkg.TypesInfo != nil {
+		if obj := pkg.TypesInfo.ObjectOf(pkgIdent); obj != nil {
+			if imp, ok := obj.(*types.PkgName); ok && imp.Imported() != nil {
+				return imp.Imported().Path()
+			}
+		}
+	}
+
+	if path := c.importPathFromIdent(pkg, pkgIdent.Name); path != "" {
+		return path
+	}
+
+	for path, imp := range pkg.Imports {
+		importName := imp.Name
+		if importName == "" {
+			importName = pathBase(path)
+		}
+		if importName == pkgIdent.Name {
+			return path
+		}
+	}
+	return ""
+}
+
+func (c *ScanContext) importPathFromIdent(pkg *packages.Package, identName string) string {
+	if pkg == nil || pkg.Syntax == nil || identName == "" {
+		return ""
+	}
+
+	for _, file := range pkg.Syntax {
+		for _, imp := range file.Imports {
+			localName := ""
+			if imp.Name != nil {
+				localName = imp.Name.Name
+			}
+			importPath := strings.Trim(imp.Path.Value, `"`)
+			if localName == "" {
+				localName = pathBase(importPath)
+			}
+			if localName == identName {
+				return importPath
+			}
+		}
+	}
+	return ""
+}
+
+func (c *ScanContext) findMethodOnType(pkgPath, typeName, methodName string) (HandlerRef, bool) {
+	return c.findMethodInPackage(pkgPath, typeName, methodName)
+}
+
 func toSlashPath(path string) string {
 	return strings.ReplaceAll(filepath.ToSlash(path), "\\", "/")
 }
@@ -429,6 +489,10 @@ func isGinImport(path string) bool {
 
 func isEchoImport(path string) bool {
 	return strings.Contains(path, "github.com/labstack/echo")
+}
+
+func isGRPCImport(path string) bool {
+	return path == "google.golang.org/grpc"
 }
 
 func pkgImports(pkgs []*packages.Package, match func(string) bool) bool {

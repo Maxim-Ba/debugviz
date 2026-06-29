@@ -16,10 +16,14 @@ func middlewareNodeID(relFile, funcName string) string {
 }
 
 func entryNodeID(kind protocol.EntryKind, method, path string) string {
-	if kind == protocol.EntryKindHTTP {
+	switch kind {
+	case protocol.EntryKindHTTP:
 		return fmt.Sprintf("entry:http:%s:%s", method, path)
+	case protocol.EntryKindGRPC:
+		return fmt.Sprintf("entry:grpc:%s:%s", method, path)
+	default:
+		return fmt.Sprintf("entry:%s:%s:%s", kind, method, path)
 	}
-	return fmt.Sprintf("entry:%s:%s:%s", kind, method, path)
 }
 
 func entryHandlesEdgeID(entryID, handlerID string) string {
@@ -32,4 +36,8 @@ func middlewareChainEdgeID(entryID, middlewareID string, order int) string {
 
 func httpEntryName(method, path string) string {
 	return strings.TrimSpace(method + " " + path)
+}
+
+func grpcEntryName(service, method string) string {
+	return service + "/" + method
 }

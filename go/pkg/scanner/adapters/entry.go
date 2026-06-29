@@ -19,6 +19,7 @@ type EntryPoint struct {
 	Kind       protocol.EntryKind
 	Method     string
 	Path       string
+	Service    string
 	Handler    HandlerRef
 	HasHandler bool
 	Middleware []HandlerRef
