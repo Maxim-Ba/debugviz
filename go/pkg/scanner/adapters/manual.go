@@ -22,6 +22,8 @@ type manualEntry struct {
 	Handler string `yaml:"handler"`
 	Service string `yaml:"service"`
 	Command string `yaml:"command"`
+	Job     string `yaml:"job"`
+	Queue   string `yaml:"queue"`
 }
 
 // LoadManualEntries reads fallback entry points from debugviz.yaml.
@@ -102,6 +104,23 @@ func manualEntryToPoint(item manualEntry, ctx *ScanContext) (EntryPoint, bool) {
 		entry := EntryPoint{
 			Kind:    kind,
 			Command: command,
+		}
+		if item.Handler != "" {
+			if ref, ok := ctx.FindFuncByName(item.Handler); ok {
+				entry.Handler = ref
+				entry.HasHandler = true
+			}
+		}
+		return entry, true
+	case protocol.EntryKindWorker:
+		job := strings.TrimSpace(item.Job)
+		if job == "" {
+			return EntryPoint{}, false
+		}
+		entry := EntryPoint{
+			Kind:  kind,
+			Job:   job,
+			Queue: strings.TrimSpace(item.Queue),
 		}
 		if item.Handler != "" {
 			if ref, ok := ctx.FindFuncByName(item.Handler); ok {

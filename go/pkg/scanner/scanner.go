@@ -196,6 +196,8 @@ func (b *graphBuilder) addEntryPoints(entries []adapters.EntryPoint) {
 			b.addGRPCEntryPoint(entry)
 		case protocol.EntryKindCLI:
 			b.addCLIEntryPoint(entry)
+		case protocol.EntryKindWorker:
+			b.addWorkerEntryPoint(entry)
 		}
 	}
 }
@@ -275,6 +277,36 @@ func (b *graphBuilder) addCLIEntryPoint(entry adapters.EntryPoint) {
 		Metadata: map[string]any{
 			"command": entry.Command,
 		},
+	}
+
+	if entry.HasHandler {
+		b.addFunctionNode(entry.Handler)
+		handlerID := functionNodeID(entry.Handler.File, entry.Handler.Name)
+		edgeID := entryHandlesEdgeID(entryID, handlerID)
+		b.edges[edgeID] = protocol.Edge{
+			ID:     edgeID,
+			Type:   protocol.EdgeTypeEntryHandles,
+			Source: entryID,
+			Target: handlerID,
+		}
+	}
+}
+
+func (b *graphBuilder) addWorkerEntryPoint(entry adapters.EntryPoint) {
+	entryID := entryNodeID(entry.Kind, entry.Job, "")
+	metadata := map[string]any{
+		"job": entry.Job,
+	}
+	if entry.Queue != "" {
+		metadata["queue"] = entry.Queue
+	}
+
+	b.nodes[entryID] = protocol.Node{
+		ID:       entryID,
+		Type:     protocol.NodeTypeEntryPoint,
+		Kind:     entry.Kind,
+		Name:     entry.Job,
+		Metadata: metadata,
 	}
 
 	if entry.HasHandler {

@@ -21,6 +21,8 @@ type EntryPoint struct {
 	Path       string
 	Service    string
 	Command    string
+	Job        string
+	Queue      string
 	Handler    HandlerRef
 	HasHandler bool
 	Middleware []HandlerRef

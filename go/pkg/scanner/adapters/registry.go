@@ -79,6 +79,7 @@ func autoDiscoverers(pkgs []*packages.Package) []EntryDiscoverer {
 	if pkgImports(pkgs, isCobraImport) || pkgImports(pkgs, isUrfaveCLIImport) {
 		discoverers = append(discoverers, NewCLI())
 	}
+	discoverers = append(discoverers, NewWorker())
 	discoverers = append(discoverers, NewStdlib())
 	return discoverers
 }
@@ -134,6 +135,8 @@ func entryDedupeKey(entry EntryPoint) string {
 		return string(entry.Kind) + "|" + entry.Service + "|" + entry.Method
 	case protocol.EntryKindCLI:
 		return string(entry.Kind) + "|" + entry.Command
+	case protocol.EntryKindWorker:
+		return string(entry.Kind) + "|" + entry.Job + "|" + entry.Queue
 	default:
 		return string(entry.Kind) + "|" + entry.Method + "|" + entry.Path
 	}

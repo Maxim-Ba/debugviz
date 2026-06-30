@@ -23,6 +23,8 @@ func entryNodeID(kind protocol.EntryKind, method, path string) string {
 		return fmt.Sprintf("entry:grpc:%s:%s", method, path)
 	case protocol.EntryKindCLI:
 		return fmt.Sprintf("entry:cli:%s", slugCLICommand(method))
+	case protocol.EntryKindWorker:
+		return fmt.Sprintf("entry:worker:%s", slugCLICommand(method))
 	default:
 		return fmt.Sprintf("entry:%s:%s:%s", kind, method, path)
 	}

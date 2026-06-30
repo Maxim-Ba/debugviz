@@ -1,0 +1,5 @@
+entries:
+  - kind: worker
+    job: ProcessOrder
+    queue: orders
+    handler: demo/worker/internal/consumer.Process
