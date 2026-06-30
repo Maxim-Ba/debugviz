@@ -231,12 +231,13 @@ func (b *graphBuilder) addHTTPEntryPoint(entry adapters.EntryPoint) {
 		b.addMiddlewareNode(mw)
 		mwID := middlewareNodeID(mw.File, mw.Name)
 		edgeID := middlewareChainEdgeID(entryID, mwID, i)
+		order := i
 		b.edges[edgeID] = protocol.Edge{
 			ID:     edgeID,
 			Type:   protocol.EdgeTypeMiddlewareChain,
 			Source: entryID,
 			Target: mwID,
-			Order:  i,
+			Order:  &order,
 		}
 	}
 }

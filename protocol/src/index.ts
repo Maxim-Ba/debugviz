@@ -92,3 +92,5 @@ export function computeGraphMeta(graph: Graph): GraphMeta {
 
   return meta;
 }
+
+export { GraphSpanMapper, mapSpanToNode, type SpanMapper } from "./span-mapper.js";

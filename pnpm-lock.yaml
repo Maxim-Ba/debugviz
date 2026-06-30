@@ -38,9 +38,18 @@ importers:
 
   server:
     dependencies:
+      '@debugviz/protocol':
+        specifier: workspace:*
+        version: link:../protocol
       '@fastify/websocket':
         specifier: ^11.0.2
         version: 11.2.0
+      ajv:
+        specifier: ^8.20.0
+        version: 8.20.0
+      ajv-formats:
+        specifier: ^3.0.1
+        version: 3.0.1(ajv@8.20.0)
       fastify:
         specifier: ^5.2.1
         version: 5.9.0
@@ -60,6 +69,9 @@ importers:
 
   web:
     dependencies:
+      '@debugviz/protocol':
+        specifier: workspace:*
+        version: link:../protocol
       react:
         specifier: ^19.0.0
         version: 19.2.7

@@ -1,6 +1,6 @@
 {
   "version": "2",
-  "generated_at": "2026-06-29T07:00:58Z",
+  "generated_at": "2026-06-30T16:17:33Z",
   "root_module": "github.com/Maxim-Ba/debugviz",
   "nodes": [
     {
@@ -483,7 +483,8 @@
       "id": "edge:middleware:entry:http:GET:-:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-api-items-:func:demo-http-internal-handler-items-go:List",
@@ -495,7 +496,8 @@
       "id": "edge:middleware:entry:http:GET:-api-items-:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/api/items/",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-api-items-{id}:func:demo-http-internal-handler-items-go:GetByID",
@@ -507,7 +509,8 @@
       "id": "edge:middleware:entry:http:GET:-api-items-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/api/items/{id}",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-api-users-:func:demo-http-internal-handler-users-go:List",
@@ -519,7 +522,8 @@
       "id": "edge:middleware:entry:http:GET:-api-users-:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/api/users/",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-api-users-{id}:func:demo-http-internal-handler-users-go:GetByID",
@@ -531,7 +535,8 @@
       "id": "edge:middleware:entry:http:GET:-api-users-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/api/users/{id}",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-health:func:demo-http-internal-router-router-go:\u003canonymous\u003e",
@@ -543,7 +548,8 @@
       "id": "edge:middleware:entry:http:GET:-health:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/health",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:GET:-{id}:func:demo-http-internal-handler-users-go:GetByID",
@@ -555,7 +561,8 @@
       "id": "edge:middleware:entry:http:GET:-{id}:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:GET:/{id}",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:POST:-:func:demo-http-internal-handler-users-go:Create",
@@ -567,7 +574,8 @@
       "id": "edge:middleware:entry:http:POST:-:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:POST:/",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:entry_handles:entry:http:POST:-api-users-:func:demo-http-internal-handler-users-go:Create",
@@ -579,7 +587,8 @@
       "id": "edge:middleware:entry:http:POST:-api-users-:mw:demo-http-internal-middleware-logging-go:Logging:0",
       "type": "middleware_chain",
       "source": "entry:http:POST:/api/users/",
-      "target": "mw:demo/http/internal/middleware/logging.go:Logging"
+      "target": "mw:demo/http/internal/middleware/logging.go:Logging",
+      "order": 0
     },
     {
       "id": "edge:calls:func:demo-http-internal-handler-items-go:GetByID:func:demo-http-internal-handler-users-go:parseID",

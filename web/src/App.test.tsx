@@ -2,30 +2,37 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { App } from "./App.js";
 
-vi.mock("three", () => ({
-  Scene: vi.fn(() => ({ background: null, add: vi.fn() })),
-  Color: vi.fn(),
-  PerspectiveCamera: vi.fn(() => ({
-    position: { set: vi.fn() },
-    aspect: 1,
-    updateProjectionMatrix: vi.fn(),
-  })),
-  WebGLRenderer: vi.fn(() => ({
-    setPixelRatio: vi.fn(),
-    setSize: vi.fn(),
-    domElement: document.createElement("canvas"),
-    render: vi.fn(),
-    dispose: vi.fn(),
-  })),
-  BoxGeometry: vi.fn(() => ({ dispose: vi.fn() })),
-  MeshStandardMaterial: vi.fn(() => ({ dispose: vi.fn() })),
-  Mesh: vi.fn(() => ({ rotation: { x: 0, y: 0 } })),
-  DirectionalLight: vi.fn(() => ({ position: { set: vi.fn() } })),
+vi.mock("./hooks/useGraph.js", () => ({
+  useGraph: () => ({
+    graph: null,
+    meta: null,
+    error: "404 /api/graph",
+    loading: false,
+    reload: vi.fn(),
+  }),
+}));
+
+vi.mock("./hooks/useTraceStream.js", () => ({
+  useTraceStream: () => ({
+    summaries: [],
+    activeTraceId: null,
+    spans: [],
+    connected: false,
+    highlightNodeIds: new Set(),
+    errorNodeIds: new Set(),
+    selectTrace: vi.fn(),
+    refreshSummaries: vi.fn(),
+  }),
+}));
+
+vi.mock("./scene/GraphViewer.js", () => ({
+  GraphViewer: () => <div data-testid="graph-viewer" />,
 }));
 
 describe("App", () => {
-  it("renders bootstrap heading", () => {
+  it("renders header and graph error state", () => {
     render(<App />);
     expect(screen.getByRole("heading", { name: "DebugViz" })).toBeDefined();
+    expect(screen.getByText(/Граф не загружен/)).toBeDefined();
   });
 });

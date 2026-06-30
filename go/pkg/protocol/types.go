@@ -80,7 +80,7 @@ type Edge struct {
 	Source     string         `json:"source"`
 	Target     string         `json:"target"`
 	Confidence CallConfidence `json:"confidence,omitempty"`
-	Order      int            `json:"order,omitempty"`
+	Order      *int           `json:"order,omitempty"`
 }
 
 // TraceEvent is a single span payload (schemas/trace-event.schema.json).

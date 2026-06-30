@@ -63,6 +63,35 @@ func TestDemoHTTPGraphUnmarshal(t *testing.T) {
 	}
 }
 
+func TestMiddlewareChainEdgeMarshalsOrderZero(t *testing.T) {
+	order := 0
+	edge := Edge{
+		Type:   EdgeTypeMiddlewareChain,
+		Source: "entry:http:GET:/",
+		Target: "mw:demo/http/internal/middleware/logging.go:Logging",
+		Order:  &order,
+	}
+
+	data, err := json.Marshal(edge)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !json.Valid(data) {
+		t.Fatalf("invalid json: %s", data)
+	}
+	var raw map[string]any
+	if err := json.Unmarshal(data, &raw); err != nil {
+		t.Fatal(err)
+	}
+	got, ok := raw["order"]
+	if !ok {
+		t.Fatalf("order missing from json: %s", data)
+	}
+	if got != float64(0) {
+		t.Fatalf("order = %v, want 0", got)
+	}
+}
+
 func TestTraceEventRoundTrip(t *testing.T) {
 	parentID := "parent-span-1"
 	event := TraceEvent{

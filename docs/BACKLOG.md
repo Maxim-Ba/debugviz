@@ -7,7 +7,7 @@
 | Milestone | Недели | Задачи | Статус |
 |-----------|--------|--------|--------|
 | M0 Foundation | 1 | 0.1–0.3 | [x] |
-| M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [ ] |
+| M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [~] |
 | M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
 | M3 Codegen | 2 | 5.1–5.4 | [ ] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [ ] |
@@ -40,20 +40,20 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 2.1 | HTTP API + загрузка статического графа | P0 | 2d | [ ] |
-| 2.2 | Приём trace + WebSocket | P0 | 3d | [ ] |
-| 2.3 | Маппинг span → node (+ entry_point) | P0 | 2d | [ ] |
+| 2.1 | HTTP API + загрузка статического графа | P0 | 2d | [x] |
+| 2.2 | Приём trace + WebSocket | P0 | 3d | [x] |
+| 2.3 | Маппинг span → node (+ entry_point) | P0 | 2d | [x] |
 
 ## Epic 3: 3D Frontend (M1–M2 + M5)
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 3.1 | Bootstrap Three.js сцены | P0 | 3d | [ ] |
-| 3.2A | Graph layout в JS (MVP) | P1 | 2d | [ ] |
+| 3.1 | Bootstrap Three.js сцены | P0 | 3d | [x] |
+| 3.2A | Graph layout в JS (MVP) | P1 | 2d | [x] |
 | 3.2B | Graph layout WASM (Rust) | P1 | 2d | [ ] |
-| 3.3 | Отрисовка рёбер + labels (icons по entry kind) | P1 | 2d | [ ] |
-| 3.4 | Live trace visualization (any entry kind) | P0 | 4d | [ ] |
-| 3.5 | UI panels (trace history, filters) | P2 | 2d | [ ] |
+| 3.3 | Отрисовка рёбер + labels (icons по entry kind) | P1 | 2d | [x] |
+| 3.4 | Live trace visualization (any entry kind) | P0 | 4d | [~] |
+| 3.5 | UI panels (trace history, filters) | P2 | 2d | [~] |
 | 3.6 | Entry point picker (filter by kind) | P1 | 2d | [ ] |
 
 ## Epic 4: Go Runtime Library (M2 + M5)

@@ -5,9 +5,11 @@ RUN corepack enable
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY web/package.json ./web/
+COPY protocol/package.json ./protocol/
 RUN pnpm install --frozen-lockfile
 
 COPY web ./web
+COPY protocol ./protocol
 COPY eslint.config.js ./
 RUN pnpm --filter @debugviz/web build
 

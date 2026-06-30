@@ -1,73 +1,107 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useCallback, useState } from "react";
+import type { GraphMeta, Node } from "@debugviz/protocol";
+import { TraceTimeline } from "./components/TraceTimeline.js";
+import { useGraph } from "./hooks/useGraph.js";
+import { useTraceStream } from "./hooks/useTraceStream.js";
+import { GraphViewer } from "./scene/GraphViewer.js";
+
+function MetaStats({ meta }: { meta: GraphMeta | null }) {
+  if (!meta) {
+    return null;
+  }
+  return (
+    <div className="meta-stats">
+      <span>{meta.nodes} nodes</span>
+      <span>{meta.edges} edges</span>
+      <span>{meta.entry_points} entry points</span>
+      {meta.packages !== undefined && <span>{meta.packages} packages</span>}
+    </div>
+  );
+}
 
 export function App() {
-  const canvasRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const container = canvasRef.current;
-    if (!container) {
-      return;
-    }
-
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x0f172a);
-
-    const camera = new THREE.PerspectiveCamera(
-      60,
-      container.clientWidth / container.clientHeight,
-      0.1,
-      100,
-    );
-    camera.position.set(0, 0, 4);
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(container.clientWidth, container.clientHeight);
-    container.appendChild(renderer.domElement);
-
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshStandardMaterial({ color: 0x38bdf8 });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-
-    const light = new THREE.DirectionalLight(0xffffff, 1.2);
-    light.position.set(2, 2, 3);
-    scene.add(light);
-
-    let frameId = 0;
-    const animate = () => {
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.015;
-      renderer.render(scene, camera);
-      frameId = window.requestAnimationFrame(animate);
-    };
-    animate();
-
-    const onResize = () => {
-      camera.aspect = container.clientWidth / container.clientHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(container.clientWidth, container.clientHeight);
-    };
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.cancelAnimationFrame(frameId);
-      window.removeEventListener("resize", onResize);
-      renderer.dispose();
-      geometry.dispose();
-      material.dispose();
-      container.removeChild(renderer.domElement);
-    };
-  }, []);
+  const { graph, meta, error, loading } = useGraph();
+  const trace = useTraceStream(Boolean(graph));
+  const [pickedNode, setPickedNode] = useState<Node | null>(null);
+  const onNodePick = useCallback((node: Node | null) => setPickedNode(node), []);
 
   return (
     <main className="app">
       <header>
-        <h1>DebugViz</h1>
-        <p>3D graph UI bootstrap (issue 3.1)</p>
+        <div>
+          <h1>DebugViz</h1>
+          <p>3D code graph + live execution path</p>
+        </div>
+        <MetaStats meta={meta} />
+        <div className="status-row">
+          <span className={trace.connected ? "status ok" : "status"}>
+            WS {trace.connected ? "connected" : "disconnected"}
+          </span>
+        </div>
       </header>
-      <div ref={canvasRef} className="canvas" />
+
+      <div className="workspace">
+        <section className="viewport">
+          {loading && <div className="overlay">Загрузка графа…</div>}
+          {error && (
+            <div className="overlay error">
+              <p>Граф не загружен</p>
+              <code>{error}</code>
+              <p>Загрузите graph.json: POST /api/graph</p>
+            </div>
+          )}
+          {graph && (
+            <GraphViewer
+              graph={graph}
+              highlightNodeIds={trace.highlightNodeIds}
+              errorNodeIds={trace.errorNodeIds}
+              onNodePick={onNodePick}
+            />
+          )}
+        </section>
+
+        <aside className="sidebar">
+          {pickedNode && (
+            <div className="node-card">
+              <h2>Node</h2>
+              <dl>
+                <dt>id</dt>
+                <dd>{pickedNode.id}</dd>
+                <dt>type</dt>
+                <dd>{pickedNode.type}</dd>
+                <dt>name</dt>
+                <dd>{pickedNode.name}</dd>
+                {pickedNode.kind && (
+                  <>
+                    <dt>kind</dt>
+                    <dd>{pickedNode.kind}</dd>
+                  </>
+                )}
+              </dl>
+            </div>
+          )}
+
+          <TraceTimeline spans={trace.spans} activeTraceId={trace.activeTraceId} />
+
+          {trace.summaries.length > 0 && (
+            <div className="trace-history">
+              <h2>Recent traces</h2>
+              <ul>
+                {trace.summaries.map((item) => (
+                  <li key={item.trace_id}>
+                    <button type="button" onClick={() => void trace.selectTrace(item.trace_id)}>
+                      <span className={item.status === "error" ? "error" : ""}>
+                        {item.entry_name ?? item.trace_id}
+                      </span>
+                      <span className="meta">{item.span_count} spans</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </aside>
+      </div>
     </main>
   );
 }
