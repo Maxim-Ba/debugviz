@@ -9,7 +9,7 @@
 | M0 Foundation | 1 | 0.1–0.3 | [x] |
 | M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [~] |
 | M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
-| M3 Codegen | 2 | 5.1–5.4 | [ ] |
+| M3 Codegen | 2 | 5.1–5.4 | [x] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [ ] |
 | M6 Auto Wire | 1.5 | 9.1–9.6 | [ ] |
 | M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [ ] |
@@ -60,24 +60,24 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 4.1 | Core span API | P0 | 2d | [ ] |
-| 4.2 | Universal HTTP middleware (`HTTPMiddleware`) | P0 | 2d | [ ] |
-| 4.3 | HTTP exporter | P0 | 1d | [ ] |
-| 4.4 | Manual span helpers | P1 | 1d | [ ] |
-| 4.5 | Router thin wrappers (chi/gin/echo) | P2 | 1d | [ ] |
-| 4.6 | gRPC interceptors (unary + stream) | P1 | 2d | [ ] |
-| 4.7 | CLI root span hook (`RunCLI`) | P2 | 1d | [ ] |
-| 4.8 | Worker job span hook (`RunJob`) | P2 | 1d | [ ] |
+| 4.1 | Core span API | P0 | 2d | [x] |
+| 4.2 | Universal HTTP middleware (`HTTPMiddleware`) | P0 | 2d | [x] |
+| 4.3 | HTTP exporter | P0 | 1d | [x] |
+| 4.4 | Manual span helpers | P1 | 1d | [x] |
+| 4.5 | Router thin wrappers (chi/gin/echo) | P2 | 1d | [~] |
+| 4.6 | gRPC interceptors (unary + stream) | P1 | 2d | [x] |
+| 4.7 | CLI root span hook (`RunCLI`) | P2 | 1d | [x] |
+| 4.8 | Worker job span hook (`RunJob`) | P2 | 1d | [x] |
 
 ## Epic 5: Codegen Instrumentation (M3)
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 5.1 | AST-анализатор функций | P0 | 3d | [ ] |
-| 5.2 | Code injector | P0 | 4d | [ ] |
-| 5.3 | CLI `debugviz instrument` | P0 | 2d | [ ] |
-| 5.4 | Интеграция go generate | P1 | 1d | [ ] |
-| 5.5 | Codegen worker handlers без ctx (opt-in) | P2 | 2d | [ ] |
+| 5.1 | AST-анализатор функций | P0 | 3d | [x] |
+| 5.2 | Code injector | P0 | 4d | [x] |
+| 5.3 | CLI `debugviz instrument` | P0 | 2d | [x] |
+| 5.4 | Интеграция go generate | P1 | 1d | [x] |
+| 5.5 | Codegen worker handlers без ctx (opt-in) | P2 | 2d | [x] |
 
 ## Epic 6: cv-backend Integration (M4)
 
@@ -126,7 +126,7 @@
 | Live HTTP curl → path подсвечен в 3D | [ ] |
 | Live gRPC grpcurl → path подсвечен в 3D | [ ] |
 | CLI command → path visible (P2, post-launch OK) | [ ] |
-| `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [ ] |
+| `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [x] |
 | `debugviz wire --write` — demo/http без ручного wiring (M6) | [ ] |
 | README spec v2 + INTEGRATION.md + CI green | [~] |
 | Screen recording 60 sec для portfolio | [ ] |

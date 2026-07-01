@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently -n server,web,demo -c blue,green,yellow \"pnpm --filter @debugviz/server dev\" \"pnpm --filter @debugviz/web dev\" \"go run ./demo/http\"",
+    "dev": "pnpm --filter @debugviz/protocol build && concurrently -n server,web,demo -c blue,green,yellow \"pnpm --filter @debugviz/server dev\" \"pnpm --filter @debugviz/web dev\" \"go run -tags debugviz ./demo/http\"",
     "test": "pnpm -r test",
     "lint": "pnpm -r lint",
     "format": "prettier --write \"**/*.{ts,tsx,js,json,md,yml,yaml}\"",

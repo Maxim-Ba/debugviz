@@ -24,3 +24,9 @@ services:
       dockerfile: demo/http/Dockerfile
     ports:
       - "8080:8080"
+    environment:
+      DEBUGVIZ_ENABLED: "true"
+      DEBUGVIZ_SERVER_URL: http://server:4000
+      DEBUGVIZ_SERVICE_NAME: demo-http
+    depends_on:
+      - server

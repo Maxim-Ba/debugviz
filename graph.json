@@ -1,6 +1,6 @@
 {
   "version": "2",
-  "generated_at": "2026-06-30T16:17:33Z",
+  "generated_at": "2026-07-01T12:29:06Z",
   "root_module": "github.com/Maxim-Ba/debugviz",
   "nodes": [
     {
@@ -92,6 +92,12 @@
         "method": "POST",
         "path": "/api/users/"
       }
+    },
+    {
+      "id": "file:demo/http/generate.go",
+      "type": "file",
+      "name": "generate.go",
+      "path": "demo/http/generate.go"
     },
     {
       "id": "file:demo/http/internal/handler/items.go",
@@ -368,12 +374,36 @@
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
+      "id": "func:demo/http/main.go:envOr",
+      "type": "function",
+      "name": "envOr",
+      "file": "demo/http/main.go",
+      "line": 27,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http"
+    },
+    {
       "id": "func:demo/http/main.go:main",
       "type": "function",
       "name": "main",
       "file": "demo/http/main.go",
-      "line": 10,
+      "line": 12,
       "package": "github.com/Maxim-Ba/debugviz/demo/http"
+    },
+    {
+      "id": "func:go/lib/debugviz/config.go:ConfigureFromEnv",
+      "type": "function",
+      "name": "ConfigureFromEnv",
+      "file": "go/lib/debugviz/config.go",
+      "line": 58,
+      "package": "github.com/Maxim-Ba/debugviz/go/lib/debugviz"
+    },
+    {
+      "id": "func:go/lib/debugviz/http.go:HTTPMiddleware",
+      "type": "function",
+      "name": "HTTPMiddleware",
+      "file": "go/lib/debugviz/http.go",
+      "line": 16,
+      "package": "github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     },
     {
       "id": "mw:demo/http/internal/middleware/logging.go:Logging",
@@ -442,6 +472,12 @@
       "path": "demo/http/internal/service"
     },
     {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz",
+      "type": "package",
+      "name": "debugviz",
+      "path": "go/lib/debugviz"
+    },
+    {
       "id": "pkg:github.com/go-chi/chi/v5",
       "type": "package",
       "name": "v5",
@@ -458,6 +494,12 @@
       "type": "package",
       "name": "http",
       "path": "net/http"
+    },
+    {
+      "id": "pkg:os",
+      "type": "package",
+      "name": "os",
+      "path": "os"
     },
     {
       "id": "pkg:strconv",
@@ -801,10 +843,37 @@
       "confidence": "unknown"
     },
     {
+      "id": "edge:calls:func:demo-http-main-go:main:func:demo-http-main-go:envOr",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:demo/http/main.go:envOr",
+      "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-main-go:main:func:go-lib-debugviz-config-go:ConfigureFromEnv",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:go/lib/debugviz/config.go:ConfigureFromEnv",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-main-go:main:func:go-lib-debugviz-http-go:HTTPMiddleware",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:go/lib/debugviz/http.go:HTTPMiddleware",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-demo-http-internal-router",
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
       "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-go-lib-debugviz",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:log",
@@ -817,6 +886,12 @@
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
       "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:os",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:os"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:encoding-json",

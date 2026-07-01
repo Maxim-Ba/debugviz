@@ -8,9 +8,10 @@ COPY web/package.json ./web/
 COPY protocol/package.json ./protocol/
 RUN pnpm install --frozen-lockfile
 
-COPY web ./web
 COPY protocol ./protocol
+COPY web ./web
 COPY eslint.config.js ./
+RUN pnpm --filter @debugviz/protocol build
 RUN pnpm --filter @debugviz/web build
 
 FROM nginx:1.27-alpine

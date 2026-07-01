@@ -2,7 +2,7 @@ import type { FastifyInstance } from "fastify";
 import type { TraceEvent } from "@debugviz/protocol";
 import type { AppState } from "../state.js";
 import { ValidationError, assertValidTraceEvent } from "../validate.js";
-import type { StoredSpan, TraceHub, TraceStore } from "./store.js";
+import type { StoredSpan, TraceHub, TraceStore } from "../trace/store.js";
 
 function parseSpanBatch(body: unknown): unknown[] {
   if (Array.isArray(body)) {

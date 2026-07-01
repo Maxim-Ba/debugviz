@@ -1,11 +1,19 @@
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
-import Ajv2020, { type ErrorObject, type ValidateFunction } from "ajv/dist/2020.js";
-import addFormats from "ajv-formats";
+import type { ErrorObject, ValidateFunction } from "ajv";
+import Ajv2020Module from "ajv/dist/2020.js";
+import addFormatsModule from "ajv-formats";
 import type { Graph, TraceEvent } from "@debugviz/protocol";
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
+
+type AjvConstructor = new (opts?: { allErrors?: boolean; strict?: boolean }) => {
+  compile<T>(schema: object): ValidateFunction<T>;
+};
+
+const Ajv2020 = Ajv2020Module as unknown as AjvConstructor;
+const addFormats = addFormatsModule as unknown as (ajv: InstanceType<AjvConstructor>) => void;
 
 function loadSchema(name: string): object {
   const path = join(repoRoot, "schemas", name);

@@ -8,8 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/spf13/cobra"
-
 	"github.com/Maxim-Ba/debugviz/go/pkg/protocol"
 )
 
@@ -32,6 +30,7 @@ func TestVersionIsSet(t *testing.T) {
 }
 
 func TestScanCommandJSON(t *testing.T) {
+	resetCommandFlags()
 	outFile := filepath.Join(t.TempDir(), "graph.json")
 	cmd := newRootCommand()
 	cmd.SetArgs([]string{
@@ -75,6 +74,7 @@ func TestScanCommandJSON(t *testing.T) {
 }
 
 func TestScanCommandDOT(t *testing.T) {
+	resetCommandFlags()
 	cmd := newRootCommand()
 	var out bytes.Buffer
 	cmd.SetOut(&out)
@@ -94,6 +94,7 @@ func TestScanCommandDOT(t *testing.T) {
 }
 
 func TestScanCommandUnknownFormat(t *testing.T) {
+	resetCommandFlags()
 	cmd := newRootCommand()
 	cmd.SetArgs([]string{"scan", "./demo/http", "--format", "yaml"})
 	cmd.SetOut(&bytes.Buffer{})
@@ -105,6 +106,7 @@ func TestScanCommandUnknownFormat(t *testing.T) {
 }
 
 func TestScanCommandUnknownFramework(t *testing.T) {
+	resetCommandFlags()
 	cmd := newRootCommand()
 	cmd.SetArgs([]string{"scan", "./demo/http", "--framework", "invalid"})
 	cmd.SetOut(&bytes.Buffer{})
@@ -115,21 +117,46 @@ func TestScanCommandUnknownFramework(t *testing.T) {
 	}
 }
 
-func newRootCommand() *cobra.Command {
+func TestInstrumentCommandDryRun(t *testing.T) {
+	resetCommandFlags()
+	cmd := newRootCommand()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{
+		"instrument",
+		"--config", "go/cmd/debugviz/testdata/instrument/debugviz.yaml",
+		"--dry-run",
+		"./go/cmd/debugviz/testdata/instrument/...",
+	})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(out.String(), "instrument go/cmd/debugviz/testdata/instrument/sample.go") {
+		t.Fatalf("dry-run output missing instrumented files:\n%s", out.String())
+	}
+}
+
+func TestInstrumentCommandRequiresMode(t *testing.T) {
+	resetCommandFlags()
+	cmd := newRootCommand()
+	cmd.SetArgs([]string{"instrument", "./demo/http"})
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+
+	if err := cmd.Execute(); err == nil {
+		t.Fatal("expected error without --dry-run or --write")
+	}
+}
+
+func resetCommandFlags() {
 	scanOutput = ""
 	scanFormat = "json"
 	scanIncludeTests = false
 	scanFramework = "auto"
-
-	root := &cobra.Command{Use: "debugviz"}
-	scanCmd := &cobra.Command{
-		Use:   "scan [patterns...]",
-		RunE:  runScan,
-	}
-	scanCmd.Flags().StringVarP(&scanOutput, "output", "o", "", "Write graph to file (default: stdout)")
-	scanCmd.Flags().StringVar(&scanFormat, "format", "json", "Output format: json, dot")
-	scanCmd.Flags().BoolVar(&scanIncludeTests, "include-tests", false, "Include *_test.go files")
-	scanCmd.Flags().StringVar(&scanFramework, "framework", "auto", "Entry discoverer: auto, chi, gin, echo, stdlib, grpc, cli")
-	root.AddCommand(scanCmd)
-	return root
+	instrumentConfig = ""
+	instrumentDryRun = false
+	instrumentWrite = false
+	instrumentIncludeTests = false
 }

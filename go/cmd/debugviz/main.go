@@ -7,6 +7,7 @@ import (
 
 	"github.com/spf13/cobra"
 
+	"github.com/Maxim-Ba/debugviz/go/pkg/codegen/instrument"
 	"github.com/Maxim-Ba/debugviz/go/pkg/protocol"
 	"github.com/Maxim-Ba/debugviz/go/pkg/scanner"
 )
@@ -18,9 +19,20 @@ var (
 	scanFormat       string
 	scanIncludeTests bool
 	scanFramework    string
+
+	instrumentConfig       string
+	instrumentDryRun       bool
+	instrumentWrite        bool
+	instrumentIncludeTests bool
 )
 
 func main() {
+	if err := newRootCommand().Execute(); err != nil {
+		os.Exit(1)
+	}
+}
+
+func newRootCommand() *cobra.Command {
 	root := &cobra.Command{
 		Use:   "debugviz",
 		Short: "DebugViz — static graph and live trace for Go applications",
@@ -46,9 +58,19 @@ func main() {
 	scanCmd.Flags().StringVar(&scanFramework, "framework", "auto", "Entry discoverer: auto, chi, gin, echo, stdlib, grpc, cli")
 	root.AddCommand(scanCmd)
 
-	if err := root.Execute(); err != nil {
-		os.Exit(1)
+	instrumentCmd := &cobra.Command{
+		Use:   "instrument [patterns...]",
+		Short: "Inject inner debugviz spans into Go source (M3)",
+		Long:  "Insert debugviz.StartSpan calls into function bodies according to debugviz.yaml rules.",
+		RunE:  runInstrument,
 	}
+	instrumentCmd.Flags().StringVar(&instrumentConfig, "config", "", "Path to debugviz.yaml (default: ./debugviz.yaml)")
+	instrumentCmd.Flags().BoolVar(&instrumentDryRun, "dry-run", false, "Print files that would be changed without writing")
+	instrumentCmd.Flags().BoolVar(&instrumentWrite, "write", false, "Write instrumented source files")
+	instrumentCmd.Flags().BoolVar(&instrumentIncludeTests, "include-tests", false, "Include *_test.go files")
+	root.AddCommand(instrumentCmd)
+
+	return root
 }
 
 func runScan(cmd *cobra.Command, args []string) error {
@@ -91,4 +113,39 @@ func encodeGraph(graph *protocol.Graph, format string) ([]byte, error) {
 	default:
 		return nil, fmt.Errorf("unknown format %q: want json or dot", format)
 	}
+}
+
+func runInstrument(cmd *cobra.Command, args []string) error {
+	if !instrumentDryRun && !instrumentWrite {
+		return fmt.Errorf("specify --dry-run or --write")
+	}
+
+	results, err := instrument.Run(instrument.Options{
+		Patterns:     args,
+		ConfigPath:   instrumentConfig,
+		IncludeTests: instrumentIncludeTests,
+		DryRun:       instrumentDryRun,
+		Write:        instrumentWrite,
+	})
+	if err != nil {
+		return err
+	}
+
+	if instrumentDryRun {
+		if len(results) == 0 {
+			fmt.Fprintln(cmd.OutOrStdout(), "no files to instrument")
+			return nil
+		}
+		for _, result := range results {
+			fmt.Fprintf(cmd.OutOrStdout(), "instrument %s (%d functions)\n", result.Path, result.Funcs)
+		}
+		return nil
+	}
+
+	var funcs int
+	for _, result := range results {
+		funcs += result.Funcs
+	}
+	fmt.Fprintf(cmd.OutOrStdout(), "instrumented %d files (%d functions)\n", len(results), funcs)
+	return nil
 }

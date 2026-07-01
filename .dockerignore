@@ -1,0 +1,11 @@
+node_modules
+**/node_modules
+.git
+dist
+**/dist
+target
+.rust
+*.log
+.env
+graph.json
+coverage

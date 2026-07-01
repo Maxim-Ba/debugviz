@@ -5,10 +5,14 @@ RUN corepack enable
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY server/package.json ./server/
+COPY protocol/package.json ./protocol/
 RUN pnpm install --frozen-lockfile
 
+COPY protocol ./protocol
 COPY server ./server
+COPY schemas ./schemas
 COPY eslint.config.js ./
+RUN pnpm --filter @debugviz/protocol build
 RUN pnpm --filter @debugviz/server build
 
 FROM node:22-alpine
@@ -17,10 +21,12 @@ RUN corepack enable
 
 COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY server/package.json ./server/
+COPY protocol/package.json ./protocol/
 RUN pnpm install --frozen-lockfile --prod
 
+COPY --from=builder /app/protocol/dist ./protocol/dist
 COPY --from=builder /app/server/dist ./server/dist
-COPY server/package.json ./server/
+COPY schemas ./schemas
 
 WORKDIR /app/server
 ENV HOST=0.0.0.0

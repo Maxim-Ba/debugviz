@@ -1,0 +1,11 @@
+server_url: http://localhost:4000
+service_name: demo-http
+
+include:
+  - "demo/http/internal/service/**"
+  - "demo/http/internal/repository/**"
+exclude:
+  - "**/*_test.go"
+  - "**/mocks/**"
+require_context: true
+allow_no_context: false
