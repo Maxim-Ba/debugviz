@@ -12,7 +12,7 @@
 | M3 Codegen | 2 | 5.1–5.4 | [x] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [ ] |
 | M6 Auto Wire | 1.5 | 9.1–9.6 | [ ] |
-| M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [ ] |
+| M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [~] |
 
 ---
 
@@ -83,9 +83,9 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 6.1 | Integration guide (HTTP example) | P0 | 2d | [ ] |
-| 6.2 | Pre-built graph для cv-backend | P2 | 0.5d | [ ] |
-| 6.3 | E2E smoke test | P1 | 2d | [ ] |
+| 6.1 | Integration guide (HTTP example) | P0 | 2d | [x] |
+| 6.2 | Pre-built graph для cv-backend | P2 | 0.5d | [x] |
+| 6.3 | E2E smoke test | P1 | 2d | [x] |
 
 ## Epic 7: Polish & Launch (M4)
 
@@ -128,7 +128,7 @@
 | CLI command → path visible (P2, post-launch OK) | [ ] |
 | `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [x] |
 | `debugviz wire --write` — demo/http без ручного wiring (M6) | [ ] |
-| README spec v2 + INTEGRATION.md + CI green | [~] |
+| README spec v2 + INTEGRATION.md + CI green | [x] |
 | Screen recording 60 sec для portfolio | [ ] |
 
 ---

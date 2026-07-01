@@ -787,5 +787,5 @@ flowchart LR
 - [ ] CLI command → path visible (M5, P2 acceptable post-launch)
 - [ ] `debugviz instrument --write` + `-tags debugviz` — auto inner spans
 - [ ] `debugviz wire --write` — demo/http без ручного Configure/middleware (M6)
-- [ ] README spec v2 + INTEGRATION.md + CI green
+- [x] README spec v2 + INTEGRATION.md + CI green
 - [ ] Screen recording 60 sec для portfolio

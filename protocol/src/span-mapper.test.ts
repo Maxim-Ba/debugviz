@@ -222,3 +222,71 @@ describe("GraphSpanMapper (issue 2.3)", () => {
     expect(hits / spans.length).toBeGreaterThanOrEqual(0.95);
   });
 });
+
+describe("GraphSpanMapper (issue 6.3 cv-backend)", () => {
+  const cvGraph = JSON.parse(
+    readFileSync(join(repoRoot, "examples", "cv-backend", "graph.json"), "utf8"),
+  ) as Graph;
+  const mapper = new GraphSpanMapper(cvGraph);
+
+  it("maps GET /api/tech/1 path across router → service → repository", () => {
+    const spans: TraceEvent[] = [
+      {
+        trace_id: "cv",
+        span_id: "root",
+        parent_span_id: null,
+        name: "cv-backend GET /api/tech/1",
+        file: "internal/router/techhndlr.go",
+        line: 41,
+        start_us: 1,
+        duration_us: 1,
+        status: "ok",
+        entry_kind: "http",
+        entry_name: "GET /api/tech/1",
+      },
+      {
+        trace_id: "cv",
+        span_id: "handler",
+        parent_span_id: "root",
+        name: "router.TechHandler.TechGet",
+        file: "internal/router/techhndlr.go",
+        line: 49,
+        start_us: 2,
+        duration_us: 1,
+        status: "ok",
+      },
+      {
+        trace_id: "cv",
+        span_id: "service",
+        parent_span_id: "handler",
+        name: "services.TechService.GetWithTags",
+        file: "internal/services/technology.go",
+        line: 97,
+        start_us: 3,
+        duration_us: 1,
+        status: "ok",
+      },
+      {
+        trace_id: "cv",
+        span_id: "repo",
+        parent_span_id: "service",
+        name: "repository.TechnologyRepo.GetWithTags",
+        file: "internal/repository/technology.go",
+        line: 230,
+        start_us: 4,
+        duration_us: 1,
+        status: "ok",
+      },
+    ];
+
+    expect(mapper.map(spans[0])).toBe("entry:http:GET:/api/tech/{techID}");
+    expect(mapper.map(spans[1])).toBe("func:internal/router/techhndlr.go:TechGet");
+    expect(mapper.map(spans[2])).toBe("func:internal/services/technology.go:GetWithTags");
+    expect(mapper.map(spans[3])).toBe("func:internal/repository/technology.go:GetWithTags");
+  });
+
+  it("has >= 20 HTTP entry points", () => {
+    const entryPoints = cvGraph.nodes.filter((node) => node.type === "entry_point");
+    expect(entryPoints.length).toBeGreaterThanOrEqual(20);
+  });
+});

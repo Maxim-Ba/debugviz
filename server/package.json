@@ -8,6 +8,7 @@
     "start": "node dist/index.js",
     "test": "vitest run",
     "smoke:epic2": "tsx scripts/smoke-epic2.mjs",
+    "smoke:epic6": "tsx scripts/smoke-epic6.mjs",
     "lint": "eslint src"
   },
   "dependencies": {

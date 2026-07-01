@@ -1,4 +1,6 @@
-.PHONY: dev test lint scan fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping
+.PHONY: dev test lint scan scan-cv-backend fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping smoke-epic6
+
+CV_BACKEND_DIR ?= ../Go_Training/cv-backend
 
 GRAPH_FILE ?= graph.json
 UI_URL ?= http://localhost:3000
@@ -32,6 +34,15 @@ lint:
 
 scan:
 	go run ./go/cmd/debugviz scan ./demo/http -o $(GRAPH_FILE) --framework auto
+
+# Regenerate pre-built cv-backend graph (issue 6.2). Requires cv-backend checkout.
+scan-cv-backend:
+	@test -d "$(CV_BACKEND_DIR)" || (echo "cv-backend not found at $(CV_BACKEND_DIR); set CV_BACKEND_DIR=..."; exit 1)
+	go build -o bin/debugviz$(if $(filter Windows_NT,$(OS)),.exe,) ./go/cmd/debugviz
+	cd "$(CV_BACKEND_DIR)" && "$(CURDIR)/bin/debugviz$(if $(filter Windows_NT,$(OS)),.exe,)" scan ./... -o "$(CURDIR)/examples/cv-backend/graph.json" --framework auto
+
+smoke-epic6:
+	pnpm --filter @debugviz/server smoke:epic6
 
 fmt:
 	gofmt -w .
