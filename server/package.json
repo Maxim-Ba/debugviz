@@ -9,6 +9,7 @@
     "test": "vitest run",
     "smoke:epic2": "tsx scripts/smoke-epic2.mjs",
     "smoke:epic6": "tsx scripts/smoke-epic6.mjs",
+    "smoke:epic7": "tsx scripts/smoke-epic7.mjs",
     "lint": "eslint src"
   },
   "dependencies": {

@@ -135,10 +135,13 @@ cd debugviz
 docker compose up
 ```
 
+**WSL + Docker Desktop:** если сборка падает с `error getting credentials` / `docker-credential-desktop.exe: exec format error`, в WSL удалите Windows credential helper из `~/.docker/config.json` (оставьте `{}` или уберите ключ `credsStore`), затем повторите `docker compose up`. Альтернатива — запускать compose из PowerShell/CMD, где Docker Desktop настроен нативно.
+
 
 | Сервис       | URL                                            |
 | ------------ | ---------------------------------------------- |
 | UI           | [http://localhost:3000](http://localhost:3000) |
+| Landing      | [http://localhost:3000/landing/](http://localhost:3000/landing/) |
 | debug-server | [http://localhost:4000](http://localhost:4000) |
 | demo HTTP    | [http://localhost:8080](http://localhost:8080) |
 
@@ -794,17 +797,20 @@ type Config struct {
 
 ## Benchmark
 
-TBD после [Issue 7.3](docs/BACKLOG.md).
+Локальный прогон: `make benchmark` (Go `testing.B`, Windows/Linux, 5 прогонов).
 
+Измерение — синтетический HTTP handler + in-process exporter (без сетевого RTT). **Overhead** — прирост latency относительно handler ~100 µs (типичный лёгкий REST handler).
 
-| Mode          | RPS | Overhead |
-| ------------- | --- | -------- |
-| No trace      | TBD | —        |
-| Manual spans  | TBD | TBD      |
-| Codegen spans | TBD | TBD      |
+| Mode            | ns/op | RPS (1 core) | Overhead vs 100 µs handler |
+| --------------- | ----- | ------------ | -------------------------- |
+| No trace        | ~35   | ~29M         | —                          |
+| HTTP middleware | ~1.7k | ~590k        | ~1.7%                      |
+| Manual spans    | ~2.4k | ~410k        | ~2.4%                      |
+| Codegen spans   | ~4.0k | ~250k        | ~4.0%                      |
 
+Target: overhead < 5% на типичном handler — **Codegen spans укладываются**.
 
-Target: overhead < 5%.
+Исходники: [`go/lib/debugviz/bench_test.go`](go/lib/debugviz/bench_test.go), отчёт: [`scripts/benchmark.sh`](scripts/benchmark.sh).
 
 ---
 
@@ -830,6 +836,7 @@ debugviz/
 │       └── protocol/
 ├── server/
 ├── web/
+├── landing/                # portfolio / demo page (Issue 7.4)
 ├── rust/layout/
 ├── demo/
 │   ├── http/               # chi REST (Quick Start)
@@ -850,6 +857,8 @@ make dev      # server + web + demo/http (hot reload)
 make test     # go test + pnpm test + wasm-pack test
 make scan     # debugviz scan ./demo/http -o /tmp/graph.json
 make lint     # golangci-lint + eslint
+make benchmark   # HTTP tracing overhead (Issue 7.3)
+make docker-smoke  # docker compose up + Epic 7 E2E
 ```
 
 

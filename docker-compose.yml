@@ -8,6 +8,19 @@ services:
     environment:
       HOST: 0.0.0.0
       PORT: 4000
+      INIT_GRAPH_PATH: /app/graph/demo-http-graph.json
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:4000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
 
   web:
     build:
@@ -16,7 +29,8 @@ services:
     ports:
       - "3000:3000"
     depends_on:
-      - server
+      server:
+        condition: service_healthy
 
   demo-http:
     build:
@@ -29,4 +43,5 @@ services:
       DEBUGVIZ_SERVER_URL: http://server:4000
       DEBUGVIZ_SERVICE_NAME: demo-http
     depends_on:
-      - server
+      server:
+        condition: service_healthy

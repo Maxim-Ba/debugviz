@@ -1,5 +1,6 @@
 import Fastify from "fastify";
 import websocket from "@fastify/websocket";
+import { loadInitialGraph } from "./graph-init.js";
 import { registerGraphRoutes } from "./routes/graph.js";
 import { registerTraceRoutes } from "./routes/traces.js";
 import { registerWebSocketRoutes } from "./routes/ws.js";
@@ -11,6 +12,8 @@ export async function buildServer() {
   const state = createAppState();
   const traces = new TraceStore();
   const hub = new TraceHub();
+
+  await loadInitialGraph(state);
 
   await app.register(websocket);
 

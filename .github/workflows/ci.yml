@@ -39,6 +39,8 @@ jobs:
         run: pnpm --filter @debugviz/server smoke:epic2
       - name: smoke epic6
         run: pnpm --filter @debugviz/server smoke:epic6
+      - name: smoke epic7
+        run: pnpm --filter @debugviz/server smoke:epic7
 
   wasm:
     runs-on: ubuntu-latest
@@ -57,3 +59,15 @@ jobs:
       - name: wasm-pack build
         working-directory: rust/layout
         run: wasm-pack build --target web
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: docker compose up
+        run: docker compose up -d --build --wait
+      - name: smoke epic7 docker
+        run: node server/scripts/smoke-epic7.mjs --docker

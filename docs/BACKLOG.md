@@ -12,7 +12,7 @@
 | M3 Codegen | 2 | 5.1–5.4 | [x] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [ ] |
 | M6 Auto Wire | 1.5 | 9.1–9.6 | [ ] |
-| M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [~] |
+| M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [x] |
 
 ---
 
@@ -91,10 +91,10 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 7.1 | Docker one-liner | P0 | 1d | [ ] |
+| 7.1 | Docker one-liner | P0 | 1d | [x] |
 | 7.2 | README spec v2 + auto wire UX | P0 | 2d | [x] |
-| 7.3 | Benchmark suite | P2 | 1d | [ ] |
-| 7.4 | Landing / portfolio page | P2 | 1d | [ ] |
+| 7.3 | Benchmark suite | P2 | 1d | [x] |
+| 7.4 | Landing / portfolio page | P2 | 1d | [x] |
 
 ## Epic 8: Multi-runtime demos (M5)
 
@@ -121,7 +121,7 @@
 
 | Критерий | Статус |
 |----------|--------|
-| `docker compose up` — demo/http end-to-end | [ ] |
+| `docker compose up` — demo/http end-to-end | [x] |
 | `debugviz scan --framework auto` → entry points в UI | [ ] |
 | Live HTTP curl → path подсвечен в 3D | [ ] |
 | Live gRPC grpcurl → path подсвечен в 3D | [ ] |

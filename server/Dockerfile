@@ -27,9 +27,12 @@ RUN pnpm install --frozen-lockfile --prod
 COPY --from=builder /app/protocol/dist ./protocol/dist
 COPY --from=builder /app/server/dist ./server/dist
 COPY schemas ./schemas
+RUN mkdir -p /app/graph
+COPY schemas/examples/demo-http-graph.json /app/graph/demo-http-graph.json
 
 WORKDIR /app/server
 ENV HOST=0.0.0.0
 ENV PORT=4000
+ENV INIT_GRAPH_PATH=/app/graph/demo-http-graph.json
 EXPOSE 4000
 CMD ["node", "dist/index.js"]

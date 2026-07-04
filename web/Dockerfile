@@ -17,4 +17,5 @@ RUN pnpm --filter @debugviz/web build
 FROM nginx:1.27-alpine
 COPY web/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=builder /app/web/dist /usr/share/nginx/html
+COPY landing /usr/share/nginx/html/landing
 EXPOSE 3000

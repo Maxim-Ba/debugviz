@@ -1,4 +1,4 @@
-.PHONY: dev test lint scan scan-cv-backend fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping smoke-epic6
+.PHONY: dev test lint scan scan-cv-backend fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping smoke-epic6 smoke-epic7 docker-smoke benchmark
 
 CV_BACKEND_DIR ?= ../Go_Training/cv-backend
 
@@ -43,6 +43,17 @@ scan-cv-backend:
 
 smoke-epic6:
 	pnpm --filter @debugviz/server smoke:epic6
+
+smoke-epic7:
+	pnpm --filter @debugviz/server smoke:epic7
+
+# Full docker one-liner verification (plain Node; no pnpm required).
+docker-smoke:
+	docker compose up -d --build --wait
+	node server/scripts/smoke-epic7.mjs --docker
+
+benchmark:
+	bash scripts/benchmark.sh
 
 fmt:
 	gofmt -w .
