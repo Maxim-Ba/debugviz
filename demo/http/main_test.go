@@ -19,7 +19,7 @@ func closeBody(t *testing.T, resp *http.Response) {
 }
 
 func TestDemoHTTPRoutes(t *testing.T) {
-	srv := httptest.NewServer(router.New())
+	srv := httptest.NewServer(router.New(""))
 	t.Cleanup(srv.Close)
 
 	t.Run("health", func(t *testing.T) {

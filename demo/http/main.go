@@ -14,12 +14,8 @@ func main() {
 		log.Fatalf("debugviz: %v", err)
 	}
 
-	handler := debugviz.HTTPMiddleware(router.New(), debugviz.HTTPMiddlewareConfig{
-		ServiceName: envOr("DEBUGVIZ_SERVICE_NAME", "demo-http"),
-	})
-
 	log.Println("demo/http listening on :8080")
-	if err := http.ListenAndServe(":8080", handler); err != nil {
+	if err := http.ListenAndServe(":8080", router.New(envOr("DEBUGVIZ_SERVICE_NAME", "demo-http"))); err != nil {
 		log.Fatal(err)
 	}
 }

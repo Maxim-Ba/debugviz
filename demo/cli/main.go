@@ -1,14 +1,23 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/spf13/cobra"
+
+	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
 func main() {
+	if err := debugviz.ConfigureFromEnv(); err != nil {
+		log.Fatalf("debugviz: %v", err)
+	}
+
 	rootCmd := &cobra.Command{Use: "demo-cli"}
+	rootCmd.PersistentPreRun = debugviz.CLICommandPreRun
 
 	serveCmd := &cobra.Command{
 		Use:   "serve",
@@ -31,7 +40,9 @@ func main() {
 
 	rootCmd.AddCommand(serveCmd, migrateCmd)
 
-	if err := rootCmd.Execute(); err != nil {
+	if err := debugviz.RunCLI("demo-cli", func(ctx context.Context) error {
+		return rootCmd.ExecuteContext(ctx)
+	}); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}

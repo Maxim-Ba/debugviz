@@ -1,5 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { GraphMeta, Node } from "@debugviz/protocol";
+import { EntryPointPicker, type EntryKindFilter } from "./components/EntryPointPicker.js";
 import { TraceTimeline } from "./components/TraceTimeline.js";
 import { useGraph } from "./hooks/useGraph.js";
 import { useTraceStream } from "./hooks/useTraceStream.js";
@@ -23,7 +24,25 @@ export function App() {
   const { graph, meta, error, loading } = useGraph();
   const trace = useTraceStream(Boolean(graph));
   const [pickedNode, setPickedNode] = useState<Node | null>(null);
+  const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
+  const [entryKindFilter, setEntryKindFilter] = useState<EntryKindFilter>("all");
   const onNodePick = useCallback((node: Node | null) => setPickedNode(node), []);
+
+  const rootEntryNodeId = useMemo(() => {
+    const root = trace.spans.find((span) => !span.parent_span_id && span.node_id);
+    return root?.node_id ?? null;
+  }, [trace.spans]);
+
+  useEffect(() => {
+    if (rootEntryNodeId) {
+      setSelectedEntryId(rootEntryNodeId);
+    }
+  }, [rootEntryNodeId]);
+
+  const handleEntrySelect = useCallback((node: Node) => {
+    setSelectedEntryId(node.id);
+    setPickedNode(node);
+  }, []);
 
   return (
     <main className="app">
@@ -55,6 +74,7 @@ export function App() {
               graph={graph}
               highlightNodeIds={trace.highlightNodeIds}
               errorNodeIds={trace.errorNodeIds}
+              focusedEntryId={selectedEntryId}
               onNodePick={onNodePick}
             />
           )}
@@ -79,6 +99,16 @@ export function App() {
                 )}
               </dl>
             </div>
+          )}
+
+          {graph && (
+            <EntryPointPicker
+              graph={graph}
+              selectedId={selectedEntryId}
+              kindFilter={entryKindFilter}
+              onKindFilterChange={setEntryKindFilter}
+              onSelect={handleEntrySelect}
+            />
           )}
 
           <TraceTimeline spans={trace.spans} activeTraceId={trace.activeTraceId} />

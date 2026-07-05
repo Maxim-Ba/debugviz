@@ -9,9 +9,10 @@ import (
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/middleware"
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
-func New() http.Handler {
+func New(serviceName string) http.Handler {
 	userRepo := repository.NewUserRepository()
 	itemRepo := repository.NewItemRepository()
 
@@ -23,6 +24,9 @@ func New() http.Handler {
 
 	r := chi.NewRouter()
 	r.Use(middleware.Logging)
+	if serviceName != "" {
+		r.Use(debugviz.ChiMiddleware(debugviz.HTTPMiddlewareConfig{ServiceName: serviceName}))
+	}
 
 	r.Get("/health", func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "text/plain; charset=utf-8")

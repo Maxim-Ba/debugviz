@@ -10,6 +10,7 @@
     "smoke:epic2": "tsx scripts/smoke-epic2.mjs",
     "smoke:epic6": "tsx scripts/smoke-epic6.mjs",
     "smoke:epic7": "tsx scripts/smoke-epic7.mjs",
+    "smoke:epic8": "tsx scripts/smoke-epic8.mjs",
     "lint": "eslint src"
   },
   "dependencies": {

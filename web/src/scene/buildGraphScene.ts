@@ -4,6 +4,7 @@ import type { Vec3 } from "../graph/layout.js";
 import {
   DIM_COLOR,
   ERROR_COLOR,
+  FOCUS_COLOR,
   HIGHLIGHT_COLOR,
   edgeColor,
   edgeWidth,
@@ -18,6 +19,8 @@ import {
 export interface GraphSceneHandle {
   setLodDistance(distance: number): void;
   setHighlights(nodeIds: Set<string>, errorNodeIds?: Set<string>): void;
+  setFocusedNode(nodeId: string | null): void;
+  getNodePosition(nodeId: string): Vec3 | null;
   pickNode(clientX: number, clientY: number): Node | null;
   dispose(): void;
 }
@@ -134,6 +137,7 @@ export function buildGraphScene(
 
   const highlightNodes = new Set<string>();
   const errorNodes = new Set<string>();
+  let focusedNodeId: string | null = null;
   const raycaster = new THREE.Raycaster();
   const pointer = new THREE.Vector2();
 
@@ -158,6 +162,8 @@ export function buildGraphScene(
           hex = ERROR_COLOR;
         } else if (highlightNodes.has(node.id)) {
           hex = HIGHLIGHT_COLOR;
+        } else if (focusedNodeId === node.id) {
+          hex = FOCUS_COLOR;
         }
         color.setHex(hex);
         group.mesh.setColorAt(index, color);
@@ -213,9 +219,20 @@ export function buildGraphScene(
     return group.nodeIds[hit.instanceId] ?? null;
   }
 
+  function setFocusedNode(nodeId: string | null): void {
+    focusedNodeId = nodeId;
+    updateInstanceMatrices();
+  }
+
+  function getNodePosition(nodeId: string): Vec3 | null {
+    return positions.get(nodeId) ?? null;
+  }
+
   const handle: GraphSceneHandle = {
     setLodDistance: applyLod,
     setHighlights,
+    setFocusedNode,
+    getNodePosition,
     pickNode,
     dispose: () => {
       for (const group of groups.values()) {

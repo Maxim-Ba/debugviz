@@ -1,4 +1,4 @@
-.PHONY: dev test lint scan scan-cv-backend fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping smoke-epic6 smoke-epic7 docker-smoke benchmark
+.PHONY: dev test lint scan scan-suite scan-cv-backend fmt wasm-build demo-ui demo-stack upload-graph open-ui wait-server demo-ping demo-grpc-ping smoke-epic6 smoke-epic7 smoke-epic8 docker-smoke docker-smoke-epic8 benchmark
 
 CV_BACKEND_DIR ?= ../Go_Training/cv-backend
 
@@ -6,6 +6,8 @@ GRAPH_FILE ?= graph.json
 UI_URL ?= http://localhost:3000
 SERVER_URL ?= http://localhost:4000
 DEMO_URL ?= http://localhost:8080
+
+GRPC_ADDR ?= localhost:9090
 
 # Browser opener (Linux/WSL: xdg-open, macOS: open, Windows: start)
 ifeq ($(OS),Windows_NT)
@@ -35,6 +37,9 @@ lint:
 scan:
 	go run ./go/cmd/debugviz scan ./demo/http -o $(GRAPH_FILE) --framework auto
 
+scan-suite:
+	go run ./go/cmd/debugviz scan ./demo/... -o schemas/examples/demo-suite-graph.json --framework auto
+
 # Regenerate pre-built cv-backend graph (issue 6.2). Requires cv-backend checkout.
 scan-cv-backend:
 	@test -d "$(CV_BACKEND_DIR)" || (echo "cv-backend not found at $(CV_BACKEND_DIR); set CV_BACKEND_DIR=..."; exit 1)
@@ -47,10 +52,16 @@ smoke-epic6:
 smoke-epic7:
 	pnpm --filter @debugviz/server smoke:epic7
 
+smoke-epic8:
+	pnpm --filter @debugviz/server smoke:epic8
+
 # Full docker one-liner verification (plain Node; no pnpm required).
 docker-smoke:
 	docker compose up -d --build --wait
 	node server/scripts/smoke-epic7.mjs --docker
+
+docker-smoke-epic8: docker-smoke
+	node server/scripts/smoke-epic8.mjs --docker
 
 benchmark:
 	bash scripts/benchmark.sh
@@ -101,3 +112,8 @@ demo-ui: demo-stack upload-graph open-ui
 demo-ping:
 	@echo "GET $(DEMO_URL)/api/items/1"
 	@curl -sf "$(DEMO_URL)/api/items/1" | head -c 200; echo ""
+
+# gRPC unary call (requires grpcurl).
+demo-grpc-ping:
+	@echo "grpcurl $(GRPC_ADDR) user.v1.UserService/GetUser"
+	@grpcurl -plaintext -d '{}' $(GRPC_ADDR) user.v1.UserService/GetUser

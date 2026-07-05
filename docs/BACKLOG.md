@@ -10,7 +10,7 @@
 | M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [~] |
 | M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
 | M3 Codegen | 2 | 5.1–5.4 | [x] |
-| M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [ ] |
+| M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [x] |
 | M6 Auto Wire | 1.5 | 9.1–9.6 | [ ] |
 | M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [x] |
 
@@ -52,9 +52,9 @@
 | 3.2A | Graph layout в JS (MVP) | P1 | 2d | [x] |
 | 3.2B | Graph layout WASM (Rust) | P1 | 2d | [ ] |
 | 3.3 | Отрисовка рёбер + labels (icons по entry kind) | P1 | 2d | [x] |
-| 3.4 | Live trace visualization (any entry kind) | P0 | 4d | [~] |
+| 3.4 | Live trace visualization (any entry kind) | P0 | 4d | [x] |
 | 3.5 | UI panels (trace history, filters) | P2 | 2d | [~] |
-| 3.6 | Entry point picker (filter by kind) | P1 | 2d | [ ] |
+| 3.6 | Entry point picker (filter by kind) | P1 | 2d | [x] |
 
 ## Epic 4: Go Runtime Library (M2 + M5)
 
@@ -64,7 +64,7 @@
 | 4.2 | Universal HTTP middleware (`HTTPMiddleware`) | P0 | 2d | [x] |
 | 4.3 | HTTP exporter | P0 | 1d | [x] |
 | 4.4 | Manual span helpers | P1 | 1d | [x] |
-| 4.5 | Router thin wrappers (chi/gin/echo) | P2 | 1d | [~] |
+| 4.5 | Router thin wrappers (chi/gin/echo) | P2 | 1d | [x] |
 | 4.6 | gRPC interceptors (unary + stream) | P1 | 2d | [x] |
 | 4.7 | CLI root span hook (`RunCLI`) | P2 | 1d | [x] |
 | 4.8 | Worker job span hook (`RunJob`) | P2 | 1d | [x] |
@@ -100,9 +100,9 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 8.1 | demo/grpc (unary service) | P1 | 1d | [ ] |
-| 8.2 | demo/cli (cobra subcommands) | P2 | 1d | [ ] |
-| 8.3 | demo/worker (fake queue consumer) | P2 | 1d | [ ] |
+| 8.1 | demo/grpc (unary service) | P1 | 1d | [x] |
+| 8.2 | demo/cli (cobra subcommands) | P2 | 1d | [x] |
+| 8.3 | demo/worker (fake queue consumer) | P2 | 1d | [x] |
 
 ## Epic 9: Auto Wire (M6)
 
@@ -122,10 +122,10 @@
 | Критерий | Статус |
 |----------|--------|
 | `docker compose up` — demo/http end-to-end | [x] |
-| `debugviz scan --framework auto` → entry points в UI | [ ] |
+| `debugviz scan --framework auto` → entry points в UI | [x] |
 | Live HTTP curl → path подсвечен в 3D | [ ] |
-| Live gRPC grpcurl → path подсвечен в 3D | [ ] |
-| CLI command → path visible (P2, post-launch OK) | [ ] |
+| Live gRPC grpcurl → path подсвечен в 3D | [x] |
+| CLI command → path visible (P2, post-launch OK) | [x] |
 | `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [x] |
 | `debugviz wire --write` — demo/http без ручного wiring (M6) | [ ] |
 | README spec v2 + INTEGRATION.md + CI green | [x] |

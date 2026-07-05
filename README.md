@@ -144,6 +144,7 @@ docker compose up
 | Landing      | [http://localhost:3000/landing/](http://localhost:3000/landing/) |
 | debug-server | [http://localhost:4000](http://localhost:4000) |
 | demo HTTP    | [http://localhost:8080](http://localhost:8080) |
+| demo gRPC    | `localhost:9090` (reflection enabled)          |
 
 
 ```bash
@@ -737,7 +738,7 @@ type Config struct {
 | ------------------------ | --------- | -------------------------------- |
 | 3D graph view            | M1        | OrbitControls, package/file LOD  |
 | Entry point icons/colors | M5        | По `kind`, не только HTTP method |
-| Entry point picker       | M5        | Filter by kind (Issue 3.6)       |
+| Entry point picker       | M5        | Filter by kind (http/grpc/cli/worker) |
 | Live path highlight      | M2        | Любой root span, не только HTTP  |
 | Timeline / waterfall     | M2        | Spans, duration, errors          |
 | Trace history, filters   | P2        | Issue 3.5                        |

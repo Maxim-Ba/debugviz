@@ -111,5 +111,6 @@ export function isNodeVisibleAtLod(node: Node, lod: LodLevel): boolean {
 }
 
 export const HIGHLIGHT_COLOR = 0xff6b35;
+export const FOCUS_COLOR = 0x38bdf8;
 export const ERROR_COLOR = 0xef4444;
 export const DIM_COLOR = 0x1e293b;

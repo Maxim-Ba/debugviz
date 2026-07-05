@@ -136,7 +136,8 @@ func entryDedupeKey(entry EntryPoint) string {
 	case protocol.EntryKindCLI:
 		return string(entry.Kind) + "|" + entry.Command
 	case protocol.EntryKindWorker:
-		return string(entry.Kind) + "|" + entry.Job + "|" + entry.Queue
+		// Handler heuristics and RunJob calls may discover the same job; queue is optional metadata.
+		return string(entry.Kind) + "|" + entry.Job
 	default:
 		return string(entry.Kind) + "|" + entry.Method + "|" + entry.Path
 	}
