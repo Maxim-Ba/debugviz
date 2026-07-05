@@ -5,6 +5,8 @@ import (
 	"os"
 	"strconv"
 	"sync"
+
+	"gopkg.in/yaml.v3"
 )
 
 // Config configures the debugviz runtime exporter.
@@ -68,6 +70,57 @@ func ConfigureFromEnv() error {
 		BatchSize:   envIntOr("DEBUGVIZ_BATCH_SIZE", 50),
 		SampleRate:  envFloatOr("DEBUGVIZ_SAMPLE_RATE", 1.0),
 	}
+	return Configure(cfg)
+}
+
+// ConfigureFromYAML loads defaults from debugviz.yaml and applies DEBUGVIZ_* overrides.
+func ConfigureFromYAML(path string) error {
+	enabled := os.Getenv("DEBUGVIZ_ENABLED") == "true"
+	if v := os.Getenv("DEBUGVIZ_ENABLED"); v == "1" {
+		enabled = true
+	}
+
+	cfg := Config{
+		ServerURL:   envOr("DEBUGVIZ_SERVER_URL", "http://localhost:4000"),
+		ServiceName: os.Getenv("DEBUGVIZ_SERVICE_NAME"),
+		Enabled:     enabled,
+		BatchSize:   envIntOr("DEBUGVIZ_BATCH_SIZE", 50),
+		SampleRate:  envFloatOr("DEBUGVIZ_SAMPLE_RATE", 1.0),
+	}
+
+	if path != "" {
+		data, err := os.ReadFile(path)
+		if err != nil {
+			if !os.IsNotExist(err) {
+				return fmt.Errorf("read debugviz config %s: %w", path, err)
+			}
+		} else {
+			var raw struct {
+				ServerURL   string `yaml:"server_url"`
+				ServiceName string `yaml:"service_name"`
+			}
+			if err := yaml.Unmarshal(data, &raw); err != nil {
+				return fmt.Errorf("parse debugviz config %s: %w", path, err)
+			}
+			if cfg.ServerURL == "http://localhost:4000" && raw.ServerURL != "" {
+				cfg.ServerURL = raw.ServerURL
+			}
+			if cfg.ServiceName == "" && raw.ServiceName != "" {
+				cfg.ServiceName = raw.ServiceName
+			}
+		}
+	}
+
+	if v := os.Getenv("DEBUGVIZ_SERVER_URL"); v != "" {
+		cfg.ServerURL = v
+	}
+	if v := os.Getenv("DEBUGVIZ_SERVICE_NAME"); v != "" {
+		cfg.ServiceName = v
+	}
+	if v := os.Getenv("DEBUGVIZ_ENABLED"); v == "true" || v == "1" {
+		cfg.Enabled = true
+	}
+
 	return Configure(cfg)
 }
 

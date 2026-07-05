@@ -16,6 +16,12 @@ jobs:
           cache-dependency-path: go.sum
       - name: go test
         run: go test ./...
+      - name: wire dry-run demo apps
+        run: |
+          go run ./go/cmd/debugviz wire --config debugviz.yaml --dry-run ./demo/http
+          go run ./go/cmd/debugviz wire --config demo/grpc/debugviz.yaml --dry-run ./demo/grpc
+          go run ./go/cmd/debugviz wire --config demo/cli/debugviz.yaml --dry-run ./demo/cli
+          go run ./go/cmd/debugviz wire --config demo/worker/debugviz.yaml --dry-run ./demo/worker
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:

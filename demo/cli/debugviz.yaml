@@ -1,0 +1,6 @@
+service_name: demo-cli
+
+wire:
+  main: main.go
+  cli:
+    cobra_execute: true

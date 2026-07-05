@@ -11,7 +11,7 @@
 | M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
 | M3 Codegen | 2 | 5.1–5.4 | [x] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [x] |
-| M6 Auto Wire | 1.5 | 9.1–9.6 | [ ] |
+| M6 Auto Wire | 1.5 | 9.1–9.6 | [x] |
 | M4 Polish | 1 | 6.1–6.3, 7.1–7.4 | [x] |
 
 ---
@@ -108,12 +108,12 @@
 
 | ID | Задача | Приоритет | Оценка | Статус |
 |----|--------|-----------|--------|--------|
-| 9.1 | CLI `debugviz wire` | P1 | 2d | [ ] |
-| 9.2 | Wire config + `ConfigureFromEnv` | P1 | 1d | [ ] |
-| 9.3 | HTTP auto-wiring (ListenAndServe, middleware) | P1 | 3d | [ ] |
-| 9.4 | gRPC / CLI / worker auto-wiring | P2 | 3d | [ ] |
-| 9.5 | Аннотации `//debugviz:app` | P2 | 1d | [ ] |
-| 9.6 | Golden tests + CI для wire | P1 | 2d | [ ] |
+| 9.1 | CLI `debugviz wire` | P1 | 2d | [x] |
+| 9.2 | Wire config + `ConfigureFromEnv` | P1 | 1d | [x] |
+| 9.3 | HTTP auto-wiring (ListenAndServe, middleware) | P1 | 3d | [x] |
+| 9.4 | gRPC / CLI / worker auto-wiring | P2 | 3d | [x] |
+| 9.5 | Аннотации `//debugviz:app` | P2 | 1d | [x] |
+| 9.6 | Golden tests + CI для wire | P1 | 2d | [x] |
 
 ---
 
@@ -127,7 +127,7 @@
 | Live gRPC grpcurl → path подсвечен в 3D | [x] |
 | CLI command → path visible (P2, post-launch OK) | [x] |
 | `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [x] |
-| `debugviz wire --write` — demo/http без ручного wiring (M6) | [ ] |
+| `debugviz wire --write` — demo/http без ручного wiring (M6) | [x] |
 | README spec v2 + INTEGRATION.md + CI green | [x] |
 | Screen recording 60 sec для portfolio | [ ] |
 

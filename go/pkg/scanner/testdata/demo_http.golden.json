@@ -93,6 +93,12 @@
       }
     },
     {
+      "id": "file:demo/http/generate.go",
+      "type": "file",
+      "name": "generate.go",
+      "path": "demo/http/generate.go"
+    },
+    {
       "id": "file:demo/http/internal/handler/items.go",
       "type": "file",
       "name": "items.go",
@@ -367,11 +373,19 @@
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
+      "id": "func:demo/http/main.go:envOr",
+      "type": "function",
+      "name": "envOr",
+      "file": "demo/http/main.go",
+      "line": 21,
+      "package": "github.com/Maxim-Ba/debugviz/demo/http"
+    },
+    {
       "id": "func:demo/http/main.go:main",
       "type": "function",
       "name": "main",
       "file": "demo/http/main.go",
-      "line": 10,
+      "line": 14,
       "package": "github.com/Maxim-Ba/debugviz/demo/http"
     },
     {
@@ -457,6 +471,12 @@
       "type": "package",
       "name": "http",
       "path": "net/http"
+    },
+    {
+      "id": "pkg:os",
+      "type": "package",
+      "name": "os",
+      "path": "os"
     },
     {
       "id": "pkg:strconv",
@@ -800,6 +820,13 @@
       "confidence": "unknown"
     },
     {
+      "id": "edge:calls:func:demo-http-main-go:main:func:demo-http-main-go:envOr",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:demo/http/main.go:envOr",
+      "confidence": "static"
+    },
+    {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-demo-http-internal-router",
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
@@ -816,6 +843,12 @@
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
       "target": "pkg:net/http"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:os",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:os"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-handler:encoding-json",

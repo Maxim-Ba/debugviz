@@ -1,6 +1,12 @@
 server_url: http://localhost:4000
 service_name: demo-http
 
+wire:
+  main: demo/http/main.go
+  http:
+    router_files:
+      - demo/http/internal/router/router.go
+
 include:
   - "demo/http/internal/service/**"
   - "demo/http/internal/repository/**"

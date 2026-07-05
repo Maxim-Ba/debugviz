@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/model"
+	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
 var ErrUserNotFound = errors.New("user not found")
@@ -22,7 +23,9 @@ func NewUserRepository() *UserRepository {
 	}
 }
 
-func (r *UserRepository) FindByID(_ context.Context, id int) (*model.User, error) {
+func (r *UserRepository) FindByID(ctx context.Context, id int) (*model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.FindByID")
+	defer __dv_end()
 	user, ok := r.users[id]
 	if !ok {
 		return nil, ErrUserNotFound
@@ -30,7 +33,9 @@ func (r *UserRepository) FindByID(_ context.Context, id int) (*model.User, error
 	return &user, nil
 }
 
-func (r *UserRepository) List(_ context.Context) ([]model.User, error) {
+func (r *UserRepository) List(ctx context.Context) ([]model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.List")
+	defer __dv_end()
 	result := make([]model.User, 0, len(r.users))
 	for _, user := range r.users {
 		result = append(result, user)
@@ -38,7 +43,9 @@ func (r *UserRepository) List(_ context.Context) ([]model.User, error) {
 	return result, nil
 }
 
-func (r *UserRepository) Create(_ context.Context, user model.User) (*model.User, error) {
+func (r *UserRepository) Create(ctx context.Context, user model.User) (*model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.Create")
+	defer __dv_end()
 	nextID := len(r.users) + 1
 	for {
 		if _, exists := r.users[nextID]; !exists {

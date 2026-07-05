@@ -150,6 +150,43 @@ func TestInstrumentCommandRequiresMode(t *testing.T) {
 	}
 }
 
+func TestWireCommandDryRun(t *testing.T) {
+	resetCommandFlags()
+	cmd := newRootCommand()
+	var out bytes.Buffer
+	cmd.SetOut(&out)
+	cmd.SetErr(&bytes.Buffer{})
+	cmd.SetArgs([]string{
+		"wire",
+		"--config", "go/cmd/debugviz/testdata/wire/debugviz.yaml",
+		"--dry-run",
+		"./go/cmd/debugviz/testdata/wire/...",
+	})
+
+	if err := cmd.Execute(); err != nil {
+		t.Fatal(err)
+	}
+	got := out.String()
+	if !strings.Contains(got, "go/cmd/debugviz/testdata/wire/main.go") {
+		t.Fatalf("dry-run output missing main.go:\n%s", got)
+	}
+	if !strings.Contains(got, "configure") {
+		t.Fatalf("dry-run output missing configure injection:\n%s", got)
+	}
+}
+
+func TestWireCommandRequiresMode(t *testing.T) {
+	resetCommandFlags()
+	cmd := newRootCommand()
+	cmd.SetArgs([]string{"wire", "./demo/http"})
+	cmd.SetOut(&bytes.Buffer{})
+	cmd.SetErr(&bytes.Buffer{})
+
+	if err := cmd.Execute(); err == nil {
+		t.Fatal("expected error without --dry-run or --write")
+	}
+}
+
 func resetCommandFlags() {
 	scanOutput = ""
 	scanFormat = "json"
@@ -159,4 +196,8 @@ func resetCommandFlags() {
 	instrumentDryRun = false
 	instrumentWrite = false
 	instrumentIncludeTests = false
+	wireConfig = ""
+	wireDryRun = false
+	wireWrite = false
+	wireIncludeTests = false
 }

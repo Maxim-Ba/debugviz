@@ -5,6 +5,7 @@ import (
 
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/model"
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
 type UserService struct {
@@ -16,13 +17,19 @@ func NewUserService(repo *repository.UserRepository) *UserService {
 }
 
 func (s *UserService) GetByID(ctx context.Context, id int) (*model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "service.UserService.GetByID")
+	defer __dv_end()
 	return s.repo.FindByID(ctx, id)
 }
 
 func (s *UserService) List(ctx context.Context) ([]model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "service.UserService.List")
+	defer __dv_end()
 	return s.repo.List(ctx)
 }
 
 func (s *UserService) Create(ctx context.Context, user model.User) (*model.User, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "service.UserService.Create")
+	defer __dv_end()
 	return s.repo.Create(ctx, user)
 }

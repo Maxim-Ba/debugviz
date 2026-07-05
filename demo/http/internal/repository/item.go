@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/Maxim-Ba/debugviz/demo/http/internal/model"
+	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
 var ErrItemNotFound = errors.New("item not found")
@@ -22,7 +23,9 @@ func NewItemRepository() *ItemRepository {
 	}
 }
 
-func (r *ItemRepository) FindByID(_ context.Context, id int) (*model.Item, error) {
+func (r *ItemRepository) FindByID(ctx context.Context, id int) (*model.Item, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.FindByID")
+	defer __dv_end()
 	item, ok := r.items[id]
 	if !ok {
 		return nil, ErrItemNotFound
@@ -30,7 +33,9 @@ func (r *ItemRepository) FindByID(_ context.Context, id int) (*model.Item, error
 	return &item, nil
 }
 
-func (r *ItemRepository) List(_ context.Context) ([]model.Item, error) {
+func (r *ItemRepository) List(ctx context.Context) ([]model.Item, error) {
+	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.List")
+	defer __dv_end()
 	result := make([]model.Item, 0, len(r.items))
 	for _, item := range r.items {
 		result = append(result, item)

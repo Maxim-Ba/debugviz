@@ -9,23 +9,18 @@ import (
 
 	userv1 "github.com/Maxim-Ba/debugviz/demo/grpc/gen/pb/user/v1"
 	"github.com/Maxim-Ba/debugviz/demo/grpc/internal/server"
-	"github.com/Maxim-Ba/debugviz/go/lib/debugviz"
 )
 
-func main() {
-	if err := debugviz.ConfigureFromEnv(); err != nil {
-		log.Fatalf("debugviz: %v", err)
-	}
+//debugviz:app name=demo-grpc
+//go:generate go run ../../go/cmd/debugviz wire --config debugviz.yaml --write .
 
+func main() {
 	lis, err := net.Listen("tcp", ":9090")
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	srv := grpc.NewServer(
-		grpc.ChainUnaryInterceptor(debugviz.UnaryServerInterceptor()),
-		grpc.ChainStreamInterceptor(debugviz.StreamServerInterceptor()),
-	)
+	srv := grpc.NewServer()
 	userv1.RegisterUserServiceServer(srv, server.NewUserServer())
 	reflection.Register(srv)
 

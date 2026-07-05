@@ -1,0 +1,7 @@
+service_name: demo-worker
+
+wire:
+  main: main.go
+  worker:
+    targets:
+      - name: OrderConsumer.Process

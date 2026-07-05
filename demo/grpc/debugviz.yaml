@@ -1,0 +1,6 @@
+service_name: demo-grpc
+
+wire:
+  main: main.go
+  grpc:
+    new_server: true

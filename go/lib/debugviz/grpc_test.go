@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"os"
+	"path/filepath"
 	"sync"
 	"testing"
 
@@ -79,6 +81,30 @@ func TestConfigureFromEnv(t *testing.T) {
 	globalMu.RUnlock()
 	if cfg.BatchSize != 10 {
 		t.Fatalf("batch size = %d, want 10", cfg.BatchSize)
+	}
+}
+
+func TestConfigureFromYAML(t *testing.T) {
+	resetRuntime(t)
+	path := filepath.Join(t.TempDir(), "debugviz.yaml")
+	content := "server_url: http://yaml.example:4000\nservice_name: yaml-app\n"
+	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv("DEBUGVIZ_ENABLED", "true")
+	t.Setenv("DEBUGVIZ_SERVER_URL", "http://env.example:4000")
+
+	if err := ConfigureFromYAML(path); err != nil {
+		t.Fatal(err)
+	}
+	globalMu.RLock()
+	cfg := globalCfg
+	globalMu.RUnlock()
+	if cfg.ServerURL != "http://env.example:4000" {
+		t.Fatalf("server url = %q, want env override", cfg.ServerURL)
+	}
+	if cfg.ServiceName != "yaml-app" {
+		t.Fatalf("service name = %q, want yaml-app", cfg.ServiceName)
 	}
 }
 

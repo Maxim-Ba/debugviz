@@ -1,0 +1,6 @@
+service_name: wire-test
+
+wire:
+  main: main.go
+  http:
+    listen_and_serve: true

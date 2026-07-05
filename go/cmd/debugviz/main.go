@@ -8,6 +8,7 @@ import (
 	"github.com/spf13/cobra"
 
 	"github.com/Maxim-Ba/debugviz/go/pkg/codegen/instrument"
+	"github.com/Maxim-Ba/debugviz/go/pkg/codegen/wire"
 	"github.com/Maxim-Ba/debugviz/go/pkg/protocol"
 	"github.com/Maxim-Ba/debugviz/go/pkg/scanner"
 )
@@ -24,6 +25,11 @@ var (
 	instrumentDryRun       bool
 	instrumentWrite        bool
 	instrumentIncludeTests bool
+
+	wireConfig       string
+	wireDryRun       bool
+	wireWrite        bool
+	wireIncludeTests bool
 )
 
 func main() {
@@ -69,6 +75,18 @@ func newRootCommand() *cobra.Command {
 	instrumentCmd.Flags().BoolVar(&instrumentWrite, "write", false, "Write instrumented source files")
 	instrumentCmd.Flags().BoolVar(&instrumentIncludeTests, "include-tests", false, "Include *_test.go files")
 	root.AddCommand(instrumentCmd)
+
+	wireCmd := &cobra.Command{
+		Use:   "wire [patterns...]",
+		Short: "Inject entry hooks and Configure into main (M6)",
+		Long:  "Insert debugviz ConfigureFromEnv and framework entry hooks according to debugviz.yaml wire rules.",
+		RunE:  runWire,
+	}
+	wireCmd.Flags().StringVar(&wireConfig, "config", "", "Path to debugviz.yaml (default: ./debugviz.yaml)")
+	wireCmd.Flags().BoolVar(&wireDryRun, "dry-run", false, "Print diff of files that would be changed without writing")
+	wireCmd.Flags().BoolVar(&wireWrite, "write", false, "Write wired source files")
+	wireCmd.Flags().BoolVar(&wireIncludeTests, "include-tests", false, "Include *_test.go files")
+	root.AddCommand(wireCmd)
 
 	return root
 }
@@ -147,5 +165,41 @@ func runInstrument(cmd *cobra.Command, args []string) error {
 		funcs += result.Funcs
 	}
 	fmt.Fprintf(cmd.OutOrStdout(), "instrumented %d files (%d functions)\n", len(results), funcs)
+	return nil
+}
+
+func runWire(cmd *cobra.Command, args []string) error {
+	if !wireDryRun && !wireWrite {
+		return fmt.Errorf("specify --dry-run or --write")
+	}
+
+	results, err := wire.Run(wire.Options{
+		Patterns:     args,
+		ConfigPath:   wireConfig,
+		IncludeTests: wireIncludeTests,
+		DryRun:       wireDryRun,
+		Write:        wireWrite,
+	})
+	if err != nil {
+		return err
+	}
+
+	if wireDryRun {
+		if len(results) == 0 {
+			fmt.Fprintln(cmd.OutOrStdout(), "no files to wire")
+			return nil
+		}
+		for i, result := range results {
+			if err := wire.WriteDiff(cmd.OutOrStdout(), result); err != nil {
+				return err
+			}
+			if i < len(results)-1 {
+				fmt.Fprintln(cmd.OutOrStdout())
+			}
+		}
+		return nil
+	}
+
+	fmt.Fprintf(cmd.OutOrStdout(), "wired %d files\n", len(results))
 	return nil
 }
