@@ -10,6 +10,8 @@ type wirePlan struct {
 	Configure      bool
 	HTTPListen     bool
 	ChiMiddleware  bool
+	GinMiddleware  bool
+	EchoMiddleware bool
 	GRPCServer     bool
 	CLIRun         bool
 	WorkerJobs     []string
@@ -17,6 +19,8 @@ type wirePlan struct {
 	SkipHTTP       bool
 	ServiceParam   string
 	ChiRouterIdent string
+	GinRouterIdent string
+	EchoRouterIdent string
 }
 
 func analyzeMain(file *ast.File, cfg Config, ann *AppAnnotation) wirePlan {
@@ -74,6 +78,9 @@ func analyzeMain(file *ast.File, cfg Config, ann *AppAnnotation) wirePlan {
 			plan.WorkerJobs = append(plan.WorkerJobs, target.Name)
 		}
 	}
+	if !cfg.workerEnabled() {
+		plan.WorkerJobs = nil
+	}
 
 	if ann != nil && ann.Name != "" && cfg.ServiceName == "" {
 		cfg.ServiceName = ann.Name
@@ -82,10 +89,23 @@ func analyzeMain(file *ast.File, cfg Config, ann *AppAnnotation) wirePlan {
 }
 
 func analyzeRouter(file *ast.File, cfg Config) wirePlan {
-	plan := wirePlan{ChiMiddleware: cfg.httpEnabled() || importsChi(file)}
-	if file == nil || fileHasWireSkip(file) || !importsChi(file) {
+	if file == nil || fileHasWireSkip(file) {
 		return wirePlan{}
 	}
+	if importsChi(file) {
+		return analyzeChiRouter(file, cfg)
+	}
+	if importsGin(file) {
+		return analyzeGinRouter(file, cfg)
+	}
+	if importsEcho(file) {
+		return analyzeEchoRouter(file, cfg)
+	}
+	return wirePlan{}
+}
+
+func analyzeChiRouter(file *ast.File, cfg Config) wirePlan {
+	plan := wirePlan{ChiMiddleware: cfg.httpEnabled() || importsChi(file)}
 	for _, decl := range file.Decls {
 		fn, ok := decl.(*ast.FuncDecl)
 		if !ok || fn.Body == nil {
@@ -99,6 +119,48 @@ func analyzeRouter(file *ast.File, cfg Config) wirePlan {
 		if param != "" {
 			plan.ServiceParam = param
 			plan.ChiRouterIdent = chiRouterIdent(fn)
+			break
+		}
+	}
+	return plan
+}
+
+func analyzeGinRouter(file *ast.File, cfg Config) wirePlan {
+	plan := wirePlan{GinMiddleware: cfg.httpEnabled() || importsGin(file)}
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Body == nil {
+			continue
+		}
+		if hasGinMiddlewareInFunc(fn) {
+			plan.GinMiddleware = false
+			break
+		}
+		param := ginHandlerServiceParam(fn)
+		if param != "" || usesGinNew(fn) {
+			plan.ServiceParam = param
+			plan.GinRouterIdent = ginRouterIdent(fn)
+			break
+		}
+	}
+	return plan
+}
+
+func analyzeEchoRouter(file *ast.File, cfg Config) wirePlan {
+	plan := wirePlan{EchoMiddleware: cfg.httpEnabled() || importsEcho(file)}
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Body == nil {
+			continue
+		}
+		if hasEchoMiddlewareInFunc(fn) {
+			plan.EchoMiddleware = false
+			break
+		}
+		param := echoHandlerServiceParam(fn)
+		if param != "" || usesEchoNew(fn) {
+			plan.ServiceParam = param
+			plan.EchoRouterIdent = echoRouterIdent(fn)
 			break
 		}
 	}
@@ -254,6 +316,38 @@ func hasChiMiddlewareInFunc(fn *ast.FuncDecl) bool {
 	return found
 }
 
+func hasGinMiddlewareInFunc(fn *ast.FuncDecl) bool {
+	found := false
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		call, ok := n.(*ast.CallExpr)
+		if !ok {
+			return true
+		}
+		if isGinMiddlewareCall(call) {
+			found = true
+			return false
+		}
+		return true
+	})
+	return found
+}
+
+func hasEchoMiddlewareInFunc(fn *ast.FuncDecl) bool {
+	found := false
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		call, ok := n.(*ast.CallExpr)
+		if !ok {
+			return true
+		}
+		if isEchoMiddlewareCall(call) {
+			found = true
+			return false
+		}
+		return true
+	})
+	return found
+}
+
 func chiHandlerServiceParam(fn *ast.FuncDecl) string {
 	if !usesChiNewRouter(fn) {
 		return ""
@@ -306,6 +400,110 @@ func usesChiNewRouter(fn *ast.FuncDecl) bool {
 	return found
 }
 
+func usesGinNew(fn *ast.FuncDecl) bool {
+	found := false
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		call, ok := n.(*ast.CallExpr)
+		if ok && isGinNewCall(call) {
+			found = true
+			return false
+		}
+		return true
+	})
+	return found
+}
+
+func usesEchoNew(fn *ast.FuncDecl) bool {
+	found := false
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		call, ok := n.(*ast.CallExpr)
+		if ok && isEchoNewCall(call) {
+			found = true
+			return false
+		}
+		return true
+	})
+	return found
+}
+
+func ginRouterIdent(fn *ast.FuncDecl) string {
+	ident := "r"
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		assign, ok := n.(*ast.AssignStmt)
+		if !ok {
+			return true
+		}
+		call, ok := assign.Rhs[0].(*ast.CallExpr)
+		if !ok || !isGinNewCall(call) {
+			return true
+		}
+		if len(assign.Lhs) > 0 {
+			if id, ok := assign.Lhs[0].(*ast.Ident); ok {
+				ident = id.Name
+			}
+		}
+		return false
+	})
+	return ident
+}
+
+func echoRouterIdent(fn *ast.FuncDecl) string {
+	ident := "e"
+	ast.Inspect(fn.Body, func(n ast.Node) bool {
+		assign, ok := n.(*ast.AssignStmt)
+		if !ok {
+			return true
+		}
+		call, ok := assign.Rhs[0].(*ast.CallExpr)
+		if !ok || !isEchoNewCall(call) {
+			return true
+		}
+		if len(assign.Lhs) > 0 {
+			if id, ok := assign.Lhs[0].(*ast.Ident); ok {
+				ident = id.Name
+			}
+		}
+		return false
+	})
+	return ident
+}
+
+func ginHandlerServiceParam(fn *ast.FuncDecl) string {
+	if !usesGinNew(fn) {
+		return ""
+	}
+	if fn.Type.Params == nil {
+		return ""
+	}
+	for _, field := range fn.Type.Params.List {
+		if len(field.Names) == 0 {
+			continue
+		}
+		if isStringType(field.Type) {
+			return field.Names[0].Name
+		}
+	}
+	return ""
+}
+
+func echoHandlerServiceParam(fn *ast.FuncDecl) string {
+	if !usesEchoNew(fn) {
+		return ""
+	}
+	if fn.Type.Params == nil {
+		return ""
+	}
+	for _, field := range fn.Type.Params.List {
+		if len(field.Names) == 0 {
+			continue
+		}
+		if isStringType(field.Type) {
+			return field.Names[0].Name
+		}
+	}
+	return ""
+}
+
 func importsChi(file *ast.File) bool {
 	if file == nil {
 		return false
@@ -313,6 +511,32 @@ func importsChi(file *ast.File) bool {
 	for _, imp := range file.Imports {
 		path := strings.Trim(imp.Path.Value, `"`)
 		if strings.Contains(path, "go-chi/chi") {
+			return true
+		}
+	}
+	return false
+}
+
+func importsGin(file *ast.File) bool {
+	if file == nil {
+		return false
+	}
+	for _, imp := range file.Imports {
+		path := strings.Trim(imp.Path.Value, `"`)
+		if strings.Contains(path, "gin-gonic/gin") {
+			return true
+		}
+	}
+	return false
+}
+
+func importsEcho(file *ast.File) bool {
+	if file == nil {
+		return false
+	}
+	for _, imp := range file.Imports {
+		path := strings.Trim(imp.Path.Value, `"`)
+		if strings.Contains(path, "labstack/echo") {
 			return true
 		}
 	}
@@ -339,6 +563,16 @@ func isChiMiddlewareCall(call *ast.CallExpr) bool {
 	return ok && isDebugvizIdent(sel.X) && sel.Sel.Name == "ChiMiddleware"
 }
 
+func isGinMiddlewareCall(call *ast.CallExpr) bool {
+	sel, ok := call.Fun.(*ast.SelectorExpr)
+	return ok && isDebugvizIdent(sel.X) && sel.Sel.Name == "GinMiddleware"
+}
+
+func isEchoMiddlewareCall(call *ast.CallExpr) bool {
+	sel, ok := call.Fun.(*ast.SelectorExpr)
+	return ok && isDebugvizIdent(sel.X) && sel.Sel.Name == "EchoMiddleware"
+}
+
 func isChiNewRouterCall(call *ast.CallExpr) bool {
 	sel, ok := call.Fun.(*ast.SelectorExpr)
 	if !ok {
@@ -348,6 +582,31 @@ func isChiNewRouterCall(call *ast.CallExpr) bool {
 		return false
 	}
 	if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "chi" {
+		return true
+	}
+	return false
+}
+
+func isGinNewCall(call *ast.CallExpr) bool {
+	sel, ok := call.Fun.(*ast.SelectorExpr)
+	if !ok {
+		return false
+	}
+	if sel.Sel.Name != "New" && sel.Sel.Name != "Default" {
+		return false
+	}
+	if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "gin" {
+		return true
+	}
+	return false
+}
+
+func isEchoNewCall(call *ast.CallExpr) bool {
+	sel, ok := call.Fun.(*ast.SelectorExpr)
+	if !ok || sel.Sel.Name != "New" {
+		return false
+	}
+	if pkg, ok := sel.X.(*ast.Ident); ok && pkg.Name == "echo" {
 		return true
 	}
 	return false
@@ -415,7 +674,7 @@ func hasCobraExecuteInFunc(fn *ast.FuncDecl) bool {
 }
 
 func planHasChanges(plan wirePlan) bool {
-	return plan.Configure || plan.HTTPListen || plan.ChiMiddleware || plan.GRPCServer || plan.CLIRun || len(plan.WorkerJobs) > 0
+	return plan.Configure || plan.HTTPListen || plan.ChiMiddleware || plan.GinMiddleware || plan.EchoMiddleware || plan.GRPCServer || plan.CLIRun || len(plan.WorkerJobs) > 0
 }
 
 func planSummary(plan wirePlan) []string {
@@ -428,6 +687,12 @@ func planSummary(plan wirePlan) []string {
 	}
 	if plan.ChiMiddleware {
 		parts = append(parts, "http.chi_middleware")
+	}
+	if plan.GinMiddleware {
+		parts = append(parts, "http.gin_middleware")
+	}
+	if plan.EchoMiddleware {
+		parts = append(parts, "http.echo_middleware")
 	}
 	if plan.GRPCServer {
 		parts = append(parts, "grpc.interceptors")

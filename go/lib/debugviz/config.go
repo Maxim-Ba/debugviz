@@ -44,8 +44,15 @@ func Configure(cfg Config) error {
 	globalOn = resolveEnabled(globalCfg.Enabled)
 
 	if !globalOn {
-		globalExport = nil
+		if globalExport != nil {
+			globalExport.shutdown()
+			globalExport = nil
+		}
 		return nil
+	}
+
+	if globalExport != nil {
+		globalExport.shutdown()
 	}
 
 	exp, err := newExporter(globalCfg)

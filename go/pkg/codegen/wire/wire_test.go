@@ -26,6 +26,24 @@ func TestWireGoldenChiRouter(t *testing.T) {
 	}, false)
 }
 
+func TestWireGoldenGinRouter(t *testing.T) {
+	runGoldenTest(t, "gin_router.input.go", "gin_router.golden.go", Config{
+		ServiceName: "demo-gin",
+		Wire: WireConfig{
+			HTTP: HTTPWireConfig{},
+		},
+	}, false)
+}
+
+func TestWireGoldenEchoRouter(t *testing.T) {
+	runGoldenTest(t, "echo_router.input.go", "echo_router.golden.go", Config{
+		ServiceName: "demo-echo",
+		Wire: WireConfig{
+			HTTP: HTTPWireConfig{},
+		},
+	}, false)
+}
+
 func TestWireGoldenGRPCMain(t *testing.T) {
 	runGoldenTest(t, "grpc_main.input.go", "grpc_main.golden.go", Config{
 		ServiceName: "demo-grpc",

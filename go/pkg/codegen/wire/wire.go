@@ -7,8 +7,6 @@ import (
 	"strings"
 )
 
-const packageLoadMode = 0 // wire reads files directly, no go/packages load required for MVP
-
 // Result summarizes one wired file.
 type Result struct {
 	Path    string
@@ -197,7 +195,7 @@ func resolveTargets(dir, configDir string, cfg Config, patterns []string, includ
 	}
 
 	if cfg.httpEnabled() && len(cfg.Wire.HTTP.RouterFiles) == 0 {
-		routerFiles, err := discoverChiRouters(dir, patterns, includeTests)
+		routerFiles, err := discoverHTTPRouters(dir, patterns, includeTests)
 		if err != nil {
 			return nil, err
 		}
@@ -211,7 +209,7 @@ func resolveTargets(dir, configDir string, cfg Config, patterns []string, includ
 	return targets, nil
 }
 
-func discoverChiRouters(dir string, patterns []string, includeTests bool) ([]wireTarget, error) {
+func discoverHTTPRouters(dir string, patterns []string, includeTests bool) ([]wireTarget, error) {
 	var routers []wireTarget
 	seen := make(map[string]struct{})
 
@@ -243,7 +241,11 @@ func discoverChiRouters(dir string, patterns []string, includeTests bool) ([]wir
 			if err != nil {
 				return err
 			}
-			if !strings.Contains(string(src), "chi.NewRouter") {
+			body := string(src)
+			if !strings.Contains(body, "chi.NewRouter") &&
+				!strings.Contains(body, "gin.New()") &&
+				!strings.Contains(body, "gin.Default()") &&
+				!strings.Contains(body, "echo.New()") {
 				return nil
 			}
 			seen[path] = struct{}{}

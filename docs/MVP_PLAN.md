@@ -16,6 +16,8 @@
 
 **Оценка:** 11–13 недель part-time.
 
+**Окружение разработки:** **WSL 2** (Windows) или Linux/macOS. Рекозиторий на диске Windows монтируется в WSL (например `/mnt/u/projects/debugviz`). Локальные команды (`make test`, `go test`, `pnpm`, `cargo`, `docker compose`) — из bash в WSL; CI в GitHub Actions — Ubuntu. Не смешивать `pnpm install` в PowerShell и WSL на одном clone без очистки `node_modules`. Docker — Docker Desktop с интеграцией WSL; при `docker-credential-desktop.exe: exec format error` см. [README Quick Start](../README.md#quick-start).
+
 ---
 
 ## Модель EntryPoint
@@ -115,9 +117,10 @@ debugviz/
 - ESLint/Prettier, golangci-lint, rustfmt
 - GitHub Actions: `go test`, `pnpm test`, `wasm-pack build`
 - `docker-compose.yml`: server + web + demo/http
+- Dev env: WSL 2 + Docker Desktop (рекомендуется на Windows); `make test` / `make lint` из bash
 
 **Критерии приёмки:**
-- `make dev` поднимает все сервисы
+- `make dev` поднимает все сервисы (из WSL)
 - CI green на пустых пакетах
 
 ---

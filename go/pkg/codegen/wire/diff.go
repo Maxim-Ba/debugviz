@@ -21,14 +21,14 @@ func WriteDiff(w io.Writer, result Result) error {
 	if !result.Changed {
 		return nil
 	}
-	fmt.Fprintf(w, "wire %s\n", FormatSummary(result))
+	_, _ = fmt.Fprintf(w, "wire %s\n", FormatSummary(result))
 	beforeLines := splitLines(string(result.Before))
 	afterLines := splitLines(string(result.After))
 	diff := unifiedDiff(result.Path, beforeLines, afterLines)
 	if diff != "" {
-		fmt.Fprint(w, diff)
+		_, _ = fmt.Fprint(w, diff)
 		if !strings.HasSuffix(diff, "\n") {
-			fmt.Fprintln(w)
+			_, _ = fmt.Fprintln(w)
 		}
 	}
 	return nil

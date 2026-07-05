@@ -18,7 +18,7 @@ func TestEchoMiddlewareRootSpan(t *testing.T) {
 	var mu sync.Mutex
 	var received []protocol.TraceEvent
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
+		defer func() { _ = r.Body.Close() }()
 		var payload struct {
 			Spans []protocol.TraceEvent `json:"spans"`
 		}
@@ -71,7 +71,7 @@ func TestEchoMiddlewareErrorStatus(t *testing.T) {
 	var mu sync.Mutex
 	var received []protocol.TraceEvent
 	srv := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		defer r.Body.Close()
+		defer func() { _ = r.Body.Close() }()
 		var payload struct {
 			Spans []protocol.TraceEvent `json:"spans"`
 		}

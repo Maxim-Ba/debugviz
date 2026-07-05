@@ -84,10 +84,6 @@ type grpcServiceDescKey struct {
 	serviceType string
 }
 
-func (k grpcServiceDescKey) serviceDescKey() grpcServiceDescKey {
-	return k
-}
-
 type registerServerCall struct {
 	pbPkgPath    string
 	serviceType  string

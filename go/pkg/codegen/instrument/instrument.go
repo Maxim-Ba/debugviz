@@ -42,7 +42,7 @@ func Run(opts Options) ([]Result, error) {
 		dir = wd
 	}
 
-	cfg := opts.Config
+	var cfg Config
 	if opts.ConfigPath != "" {
 		loaded, err := LoadConfig(opts.ConfigPath)
 		if err != nil {

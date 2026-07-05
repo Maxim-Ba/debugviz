@@ -30,7 +30,7 @@ test:
 	cd rust/layout && wasm-pack test --node
 
 lint:
-	golangci-lint run ./...
+	golangci-lint run ./go/... ./demo/...
 	pnpm lint
 	cargo fmt --check --manifest-path rust/layout/Cargo.toml
 

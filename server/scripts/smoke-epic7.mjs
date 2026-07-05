@@ -102,36 +102,58 @@ async function smokeDockerStack() {
   const demoBody = await demoHealth.text();
   record("7.1 demo-http /health", demoHealth.ok && demoBody.includes("ok"), demoBody.trim());
 
-  const beforeTraces = await (await fetch(`${SERVER_URL}/api/traces`)).json();
-  const beforeCount = Array.isArray(beforeTraces) ? beforeTraces.length : 0;
-
-  const ping = await fetch(`${DEMO_URL}/api/users/1`);
+  const traceID = `epic7-smoke-${Date.now()}`;
+  const ping = await fetch(`${DEMO_URL}/api/users/1`, {
+    headers: { "X-Trace-ID": traceID },
+  });
   record("7.1 demo-http GET /api/users/1", ping.ok, `status=${ping.status}`);
 
-  let afterCount = beforeCount;
+  let detail = null;
   for (let i = 0; i < 20; i++) {
     await new Promise((r) => setTimeout(r, 250));
-    const list = await (await fetch(`${SERVER_URL}/api/traces`)).json();
-    afterCount = Array.isArray(list) ? list.length : 0;
-    if (afterCount > beforeCount) {
+    const res = await fetch(`${SERVER_URL}/api/traces/${traceID}`);
+    if (res.ok) {
+      detail = await res.json();
       break;
     }
   }
   record(
     "7.1 live trace ingested",
-    afterCount > beforeCount,
-    `traces before=${beforeCount} after=${afterCount}`,
+    detail !== null && Array.isArray(detail.spans) && detail.spans.length > 0,
+    detail ? `spans=${detail.spans.length}` : "trace not found",
   );
 
-  if (afterCount > beforeCount) {
-    const list = await (await fetch(`${SERVER_URL}/api/traces`)).json();
-    const latest = list[0];
-    const detail = await (await fetch(`${SERVER_URL}/api/traces/${latest.trace_id}`)).json();
-    const nodeId = detail.spans?.find((s) => s.entry_kind === "http")?.node_id ?? null;
+  if (detail?.spans?.length) {
+    const spans = detail.spans;
+    const httpSpan = spans.find((s) => s.entry_kind === "http");
+    const nodeId = httpSpan?.node_id ?? null;
     record(
       "7.1 span mapped to entry node",
       nodeId === "entry:http:GET:/api/users/{id}",
       `node_id=${nodeId}`,
+    );
+
+    const serviceSpan = spans.find((s) => s.name?.includes("UserService.GetByID"));
+    record(
+      "7.1 service span mapped",
+      serviceSpan?.node_id === "func:demo/http/internal/service/user.go:GetByID",
+      `node_id=${serviceSpan?.node_id ?? "null"}`,
+    );
+
+    const repoSpan = spans.find((s) => s.name?.includes("UserRepository.FindByID"));
+    record(
+      "7.1 repository span mapped",
+      repoSpan?.node_id === "func:demo/http/internal/repository/user.go:FindByID",
+      `node_id=${repoSpan?.node_id ?? "null"}`,
+    );
+
+    const mappedPath = [httpSpan, serviceSpan, repoSpan].filter(
+      (span) => span?.node_id,
+    ).length;
+    record(
+      "7.1 HTTP live path nodes",
+      mappedPath >= 3,
+      `mapped=${mappedPath}/3`,
     );
   }
 

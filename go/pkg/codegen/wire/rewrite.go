@@ -71,6 +71,14 @@ func applyPlan(file *ast.File, fset *token.FileSet, cfg Config, ann *AppAnnotati
 		if err := injectChiMiddleware(file, cfg, ann); err != nil {
 			return err
 		}
+	} else if plan.GinMiddleware {
+		if err := injectGinMiddleware(file, cfg, ann); err != nil {
+			return err
+		}
+	} else if plan.EchoMiddleware {
+		if err := injectEchoMiddleware(file, cfg, ann); err != nil {
+			return err
+		}
 	}
 	return ensureImports(fset, file, cfg, plan)
 }
@@ -141,10 +149,46 @@ func injectChiMiddleware(file *ast.File, cfg Config, ann *AppAnnotation) error {
 		routerIdent := chiRouterIdent(fn)
 		serviceParam := chiHandlerServiceParam(fn)
 		stmt := chiMiddlewareUseStmt(routerIdent, cfg, ann, serviceParam)
-		insertAfterLastUse(fn, routerIdent, stmt)
+		insertAfterRouterCreate(fn, routerIdent, stmt, isChiNewRouterCall)
 		return nil
 	}
 	return fmt.Errorf("chi router function not found")
+}
+
+func injectGinMiddleware(file *ast.File, cfg Config, ann *AppAnnotation) error {
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Body == nil || hasGinMiddlewareInFunc(fn) {
+			continue
+		}
+		if !usesGinNew(fn) {
+			continue
+		}
+		routerIdent := ginRouterIdent(fn)
+		serviceParam := ginHandlerServiceParam(fn)
+		stmt := ginMiddlewareUseStmt(routerIdent, cfg, ann, serviceParam)
+		insertAfterRouterCreate(fn, routerIdent, stmt, isGinNewCall)
+		return nil
+	}
+	return fmt.Errorf("gin router function not found")
+}
+
+func injectEchoMiddleware(file *ast.File, cfg Config, ann *AppAnnotation) error {
+	for _, decl := range file.Decls {
+		fn, ok := decl.(*ast.FuncDecl)
+		if !ok || fn.Body == nil || hasEchoMiddlewareInFunc(fn) {
+			continue
+		}
+		if !usesEchoNew(fn) {
+			continue
+		}
+		routerIdent := echoRouterIdent(fn)
+		serviceParam := echoHandlerServiceParam(fn)
+		stmt := echoMiddlewareUseStmt(routerIdent, cfg, ann, serviceParam)
+		insertAfterRouterCreate(fn, routerIdent, stmt, isEchoNewCall)
+		return nil
+	}
+	return fmt.Errorf("echo router function not found")
 }
 
 func chiMiddlewareUseStmt(routerIdent string, cfg Config, ann *AppAnnotation, serviceParam string) ast.Stmt {
@@ -169,7 +213,51 @@ func chiMiddlewareUseStmt(routerIdent string, cfg Config, ann *AppAnnotation, se
 	}
 }
 
-func insertAfterLastUse(fn *ast.FuncDecl, routerIdent string, stmt ast.Stmt) {
+func ginMiddlewareUseStmt(routerIdent string, cfg Config, ann *AppAnnotation, serviceParam string) ast.Stmt {
+	return &ast.ExprStmt{
+		X: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X:   ast.NewIdent(routerIdent),
+				Sel: ast.NewIdent("Use"),
+			},
+			Args: []ast.Expr{
+				&ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   ast.NewIdent("debugviz"),
+						Sel: ast.NewIdent("GinMiddleware"),
+					},
+					Args: []ast.Expr{
+						httpMiddlewareConfig(cfg, ann, serviceParam),
+					},
+				},
+			},
+		},
+	}
+}
+
+func echoMiddlewareUseStmt(routerIdent string, cfg Config, ann *AppAnnotation, serviceParam string) ast.Stmt {
+	return &ast.ExprStmt{
+		X: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X:   ast.NewIdent(routerIdent),
+				Sel: ast.NewIdent("Use"),
+			},
+			Args: []ast.Expr{
+				&ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   ast.NewIdent("debugviz"),
+						Sel: ast.NewIdent("EchoMiddleware"),
+					},
+					Args: []ast.Expr{
+						httpMiddlewareConfig(cfg, ann, serviceParam),
+					},
+				},
+			},
+		},
+	}
+}
+
+func insertAfterRouterCreate(fn *ast.FuncDecl, routerIdent string, stmt ast.Stmt, isCreateCall func(*ast.CallExpr) bool) {
 	lastUseIdx := -1
 	for i, s := range fn.Body.List {
 		exprStmt, ok := s.(*ast.ExprStmt)
@@ -200,7 +288,7 @@ func insertAfterLastUse(fn *ast.FuncDecl, routerIdent string, stmt ast.Stmt) {
 			continue
 		}
 		call, ok := assign.Rhs[0].(*ast.CallExpr)
-		if ok && isChiNewRouterCall(call) {
+		if ok && isCreateCall(call) {
 			fn.Body.List = append(fn.Body.List[:i+1], append([]ast.Stmt{stmt}, fn.Body.List[i+1:]...)...)
 			return
 		}

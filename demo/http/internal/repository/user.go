@@ -24,7 +24,7 @@ func NewUserRepository() *UserRepository {
 }
 
 func (r *UserRepository) FindByID(ctx context.Context, id int) (*model.User, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.FindByID")
+	_, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.FindByID")
 	defer __dv_end()
 	user, ok := r.users[id]
 	if !ok {
@@ -34,7 +34,7 @@ func (r *UserRepository) FindByID(ctx context.Context, id int) (*model.User, err
 }
 
 func (r *UserRepository) List(ctx context.Context) ([]model.User, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.List")
+	_, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.List")
 	defer __dv_end()
 	result := make([]model.User, 0, len(r.users))
 	for _, user := range r.users {
@@ -44,7 +44,7 @@ func (r *UserRepository) List(ctx context.Context) ([]model.User, error) {
 }
 
 func (r *UserRepository) Create(ctx context.Context, user model.User) (*model.User, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.Create")
+	_, __dv_end := debugviz.StartSpan(ctx, "repository.UserRepository.Create")
 	defer __dv_end()
 	nextID := len(r.users) + 1
 	for {

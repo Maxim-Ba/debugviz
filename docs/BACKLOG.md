@@ -2,13 +2,20 @@
 
 > Оценка: **11–13 недель** part-time. Обновляйте колонку **Статус**: `[ ]` — не начато, `[~]` — в работе, `[x]` — готово.
 
+## Окружение разработки
+
+- **WSL 2** — основной терминал для работы над бэклогом на Windows (`bash`, путь вида `/mnt/u/projects/debugviz`).
+- **Toolchain в WSL:** Go 1.23+, Node 22, pnpm 10 (`corepack`), Rust/wasm-pack (для 3.2B), `golangci-lint`, Docker Desktop (интеграция с WSL).
+- **Локальная проверка:** `make test`, `make lint`, `make docker-smoke` — из WSL; не смешивать `pnpm install` в PowerShell и WSL на одном clone.
+- Подробнее: [MVP_PLAN — окружение](./MVP_PLAN.md), [STATUS_GAPS — ручные команды](./STATUS_GAPS_2026-07-05.md#ручные-команды-требуются-от-вас), [README — разработка monorepo](../README.md#разработка-monorepo).
+
 ## Milestones
 
 | Milestone | Недели | Задачи | Статус |
 |-----------|--------|--------|--------|
 | M0 Foundation | 1 | 0.1–0.3 | [x] |
-| M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [~] |
-| M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [ ] |
+| M1 Static Graph | 2 | 1.1–1.4, 2.1, 3.1–3.3 | [x] |
+| M2 Live Trace | 2 | 2.2–2.3, 3.2B, 3.4, 4.1–4.4 | [~] |
 | M3 Codegen | 2 | 5.1–5.4 | [x] |
 | M5 Universal Entry Points | 2 | 1.5–1.7, 3.6, 4.5–4.8, 5.5, 8.1–8.3 | [x] |
 | M6 Auto Wire | 1.5 | 9.1–9.6 | [x] |
@@ -123,7 +130,7 @@
 |----------|--------|
 | `docker compose up` — demo/http end-to-end | [x] |
 | `debugviz scan --framework auto` → entry points в UI | [x] |
-| Live HTTP curl → path подсвечен в 3D | [ ] |
+| Live HTTP curl → path подсвечен в 3D | [x] |
 | Live gRPC grpcurl → path подсвечен в 3D | [x] |
 | CLI command → path visible (P2, post-launch OK) | [x] |
 | `debugviz instrument --write` + `-tags debugviz` — auto inner spans | [x] |

@@ -151,11 +151,11 @@ func runInstrument(cmd *cobra.Command, args []string) error {
 
 	if instrumentDryRun {
 		if len(results) == 0 {
-			fmt.Fprintln(cmd.OutOrStdout(), "no files to instrument")
+			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "no files to instrument")
 			return nil
 		}
 		for _, result := range results {
-			fmt.Fprintf(cmd.OutOrStdout(), "instrument %s (%d functions)\n", result.Path, result.Funcs)
+			_, _ = fmt.Fprintf(cmd.OutOrStdout(), "instrument %s (%d functions)\n", result.Path, result.Funcs)
 		}
 		return nil
 	}
@@ -164,7 +164,7 @@ func runInstrument(cmd *cobra.Command, args []string) error {
 	for _, result := range results {
 		funcs += result.Funcs
 	}
-	fmt.Fprintf(cmd.OutOrStdout(), "instrumented %d files (%d functions)\n", len(results), funcs)
+	_, _ = fmt.Fprintf(cmd.OutOrStdout(), "instrumented %d files (%d functions)\n", len(results), funcs)
 	return nil
 }
 
@@ -186,7 +186,7 @@ func runWire(cmd *cobra.Command, args []string) error {
 
 	if wireDryRun {
 		if len(results) == 0 {
-			fmt.Fprintln(cmd.OutOrStdout(), "no files to wire")
+			_, _ = fmt.Fprintln(cmd.OutOrStdout(), "no files to wire")
 			return nil
 		}
 		for i, result := range results {
@@ -194,12 +194,12 @@ func runWire(cmd *cobra.Command, args []string) error {
 				return err
 			}
 			if i < len(results)-1 {
-				fmt.Fprintln(cmd.OutOrStdout())
+				_, _ = fmt.Fprintln(cmd.OutOrStdout())
 			}
 		}
 		return nil
 	}
 
-	fmt.Fprintf(cmd.OutOrStdout(), "wired %d files\n", len(results))
+	_, _ = fmt.Fprintf(cmd.OutOrStdout(), "wired %d files\n", len(results))
 	return nil
 }

@@ -17,13 +17,15 @@ func NewItemService(repo *repository.ItemRepository) *ItemService {
 }
 
 func (s *ItemService) GetByID(ctx context.Context, id int) (*model.Item, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "service.ItemService.GetByID")
+	var __dv_end func()
+	ctx, __dv_end = debugviz.StartSpan(ctx, "service.ItemService.GetByID")
 	defer __dv_end()
 	return s.repo.FindByID(ctx, id)
 }
 
 func (s *ItemService) List(ctx context.Context) ([]model.Item, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "service.ItemService.List")
+	var __dv_end func()
+	ctx, __dv_end = debugviz.StartSpan(ctx, "service.ItemService.List")
 	defer __dv_end()
 	return s.repo.List(ctx)
 }

@@ -249,7 +249,7 @@
       "type": "function",
       "name": "FindByID",
       "file": "demo/http/internal/repository/item.go",
-      "line": 25,
+      "line": 26,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -257,7 +257,7 @@
       "type": "function",
       "name": "List",
       "file": "demo/http/internal/repository/item.go",
-      "line": 33,
+      "line": 36,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -265,7 +265,7 @@
       "type": "function",
       "name": "NewItemRepository",
       "file": "demo/http/internal/repository/item.go",
-      "line": 16,
+      "line": 17,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -273,7 +273,7 @@
       "type": "function",
       "name": "Create",
       "file": "demo/http/internal/repository/user.go",
-      "line": 41,
+      "line": 46,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -281,7 +281,7 @@
       "type": "function",
       "name": "FindByID",
       "file": "demo/http/internal/repository/user.go",
-      "line": 25,
+      "line": 26,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -289,7 +289,7 @@
       "type": "function",
       "name": "List",
       "file": "demo/http/internal/repository/user.go",
-      "line": 33,
+      "line": 36,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -297,7 +297,7 @@
       "type": "function",
       "name": "NewUserRepository",
       "file": "demo/http/internal/repository/user.go",
-      "line": 16,
+      "line": 17,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
     },
     {
@@ -305,7 +305,7 @@
       "type": "function",
       "name": "\u003canonymous\u003e",
       "file": "demo/http/internal/router/router.go",
-      "line": 27,
+      "line": 29,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/router"
     },
     {
@@ -313,7 +313,7 @@
       "type": "function",
       "name": "New",
       "file": "demo/http/internal/router/router.go",
-      "line": 14,
+      "line": 15,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/router"
     },
     {
@@ -321,7 +321,7 @@
       "type": "function",
       "name": "GetByID",
       "file": "demo/http/internal/service/item.go",
-      "line": 18,
+      "line": 19,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -329,7 +329,7 @@
       "type": "function",
       "name": "List",
       "file": "demo/http/internal/service/item.go",
-      "line": 22,
+      "line": 26,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -337,7 +337,7 @@
       "type": "function",
       "name": "NewItemService",
       "file": "demo/http/internal/service/item.go",
-      "line": 14,
+      "line": 15,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -345,7 +345,7 @@
       "type": "function",
       "name": "Create",
       "file": "demo/http/internal/service/user.go",
-      "line": 26,
+      "line": 33,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -353,7 +353,7 @@
       "type": "function",
       "name": "GetByID",
       "file": "demo/http/internal/service/user.go",
-      "line": 18,
+      "line": 19,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -361,7 +361,7 @@
       "type": "function",
       "name": "List",
       "file": "demo/http/internal/service/user.go",
-      "line": 22,
+      "line": 26,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -369,7 +369,7 @@
       "type": "function",
       "name": "NewUserService",
       "file": "demo/http/internal/service/user.go",
-      "line": 14,
+      "line": 15,
       "package": "github.com/Maxim-Ba/debugviz/demo/http/internal/service"
     },
     {
@@ -377,7 +377,7 @@
       "type": "function",
       "name": "envOr",
       "file": "demo/http/main.go",
-      "line": 21,
+      "line": 24,
       "package": "github.com/Maxim-Ba/debugviz/demo/http"
     },
     {
@@ -387,6 +387,30 @@
       "file": "demo/http/main.go",
       "line": 14,
       "package": "github.com/Maxim-Ba/debugviz/demo/http"
+    },
+    {
+      "id": "func:go/lib/debugviz/config.go:ConfigureFromEnv",
+      "type": "function",
+      "name": "ConfigureFromEnv",
+      "file": "go/lib/debugviz/config.go",
+      "line": 67,
+      "package": "github.com/Maxim-Ba/debugviz/go/lib/debugviz"
+    },
+    {
+      "id": "func:go/lib/debugviz/http.go:ChiMiddleware",
+      "type": "function",
+      "name": "ChiMiddleware",
+      "file": "go/lib/debugviz/http.go",
+      "line": 55,
+      "package": "github.com/Maxim-Ba/debugviz/go/lib/debugviz"
+    },
+    {
+      "id": "func:go/lib/debugviz/span.go:StartSpan",
+      "type": "function",
+      "name": "StartSpan",
+      "file": "go/lib/debugviz/span.go",
+      "line": 46,
+      "package": "github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     },
     {
       "id": "mw:demo/http/internal/middleware/logging.go:Logging",
@@ -453,6 +477,12 @@
       "type": "package",
       "name": "service",
       "path": "demo/http/internal/service"
+    },
+    {
+      "id": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz",
+      "type": "package",
+      "name": "debugviz",
+      "path": "go/lib/debugviz"
     },
     {
       "id": "pkg:github.com/go-chi/chi/v5",
@@ -736,6 +766,41 @@
       "confidence": "static"
     },
     {
+      "id": "edge:calls:func:demo-http-internal-repository-item-go:FindByID:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/repository/item.go:FindByID",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-repository-item-go:List:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/repository/item.go:List",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-repository-user-go:Create:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/repository/user.go:Create",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-repository-user-go:FindByID:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/repository/user.go:FindByID",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-repository-user-go:List:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/repository/user.go:List",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:demo-http-internal-handler-items-go:NewItemHandler",
       "type": "calls",
       "source": "func:demo/http/internal/router/router.go:New",
@@ -778,11 +843,25 @@
       "confidence": "unknown"
     },
     {
+      "id": "edge:calls:func:demo-http-internal-router-router-go:New:func:go-lib-debugviz-http-go:ChiMiddleware",
+      "type": "calls",
+      "source": "func:demo/http/internal/router/router.go:New",
+      "target": "func:go/lib/debugviz/http.go:ChiMiddleware",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:calls:func:demo-http-internal-service-item-go:GetByID:func:demo-http-internal-repository-item-go:FindByID",
       "type": "calls",
       "source": "func:demo/http/internal/service/item.go:GetByID",
       "target": "func:demo/http/internal/repository/item.go:FindByID",
       "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-item-go:GetByID:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/item.go:GetByID",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
     },
     {
       "id": "edge:calls:func:demo-http-internal-service-item-go:List:func:demo-http-internal-repository-item-go:List",
@@ -792,11 +871,25 @@
       "confidence": "static"
     },
     {
+      "id": "edge:calls:func:demo-http-internal-service-item-go:List:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/item.go:List",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:calls:func:demo-http-internal-service-user-go:Create:func:demo-http-internal-repository-user-go:Create",
       "type": "calls",
       "source": "func:demo/http/internal/service/user.go:Create",
       "target": "func:demo/http/internal/repository/user.go:Create",
       "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:Create:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:Create",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
     },
     {
       "id": "edge:calls:func:demo-http-internal-service-user-go:GetByID:func:demo-http-internal-repository-user-go:FindByID",
@@ -806,11 +899,25 @@
       "confidence": "static"
     },
     {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:GetByID:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:GetByID",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:calls:func:demo-http-internal-service-user-go:List:func:demo-http-internal-repository-user-go:List",
       "type": "calls",
       "source": "func:demo/http/internal/service/user.go:List",
       "target": "func:demo/http/internal/repository/user.go:List",
       "confidence": "static"
+    },
+    {
+      "id": "edge:calls:func:demo-http-internal-service-user-go:List:func:go-lib-debugviz-span-go:StartSpan",
+      "type": "calls",
+      "source": "func:demo/http/internal/service/user.go:List",
+      "target": "func:go/lib/debugviz/span.go:StartSpan",
+      "confidence": "unknown"
     },
     {
       "id": "edge:calls:func:demo-http-main-go:main:func:demo-http-internal-router-router-go:New",
@@ -827,10 +934,23 @@
       "confidence": "static"
     },
     {
+      "id": "edge:calls:func:demo-http-main-go:main:func:go-lib-debugviz-config-go:ConfigureFromEnv",
+      "type": "calls",
+      "source": "func:demo/http/main.go:main",
+      "target": "func:go/lib/debugviz/config.go:ConfigureFromEnv",
+      "confidence": "unknown"
+    },
+    {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-demo-http-internal-router",
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
       "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:github-com-Maxim-Ba-debugviz-go-lib-debugviz",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http:log",
@@ -935,6 +1055,12 @@
       "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/model"
     },
     {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-repository:github-com-Maxim-Ba-debugviz-go-lib-debugviz",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz"
+    },
+    {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-demo-http-internal-handler",
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
@@ -957,6 +1083,12 @@
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
       "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-Maxim-Ba-debugviz-go-lib-debugviz",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/router",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     },
     {
       "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-router:github-com-go-chi-chi-v5",
@@ -987,6 +1119,12 @@
       "type": "imports",
       "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
       "target": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/repository"
+    },
+    {
+      "id": "edge:imports:github-com-Maxim-Ba-debugviz-demo-http-internal-service:github-com-Maxim-Ba-debugviz-go-lib-debugviz",
+      "type": "imports",
+      "source": "pkg:github.com/Maxim-Ba/debugviz/demo/http/internal/service",
+      "target": "pkg:github.com/Maxim-Ba/debugviz/go/lib/debugviz"
     }
   ]
 }

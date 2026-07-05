@@ -24,7 +24,7 @@ func NewItemRepository() *ItemRepository {
 }
 
 func (r *ItemRepository) FindByID(ctx context.Context, id int) (*model.Item, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.FindByID")
+	_, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.FindByID")
 	defer __dv_end()
 	item, ok := r.items[id]
 	if !ok {
@@ -34,7 +34,7 @@ func (r *ItemRepository) FindByID(ctx context.Context, id int) (*model.Item, err
 }
 
 func (r *ItemRepository) List(ctx context.Context) ([]model.Item, error) {
-	ctx, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.List")
+	_, __dv_end := debugviz.StartSpan(ctx, "repository.ItemRepository.List")
 	defer __dv_end()
 	result := make([]model.Item, 0, len(r.items))
 	for _, item := range r.items {
